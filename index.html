@@ -2,90 +2,365 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Tidal Site</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player</title>
     <style>
-        body { background: #312351; color: white; font-family: Arial; margin: 0; padding: 20px; }
-        .search-box { background: #5a3f7a; border-radius: 10px; padding: 10px; display: flex; align-items: center; }
-        #search { background: none; border: none; color: white; width: 200px; }
-        .player { background: #5a3f7a; border-radius: 10px; padding: 20px; margin-top: 20px; }
-        #now-playing { font-size: 18px; }
-        button { background: none; border: none; color: white; font-size: 20px; margin: 0 5px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e1e2e 0%, #2d1b3d 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .player-card, .search-card {
+            background: rgba(50, 40, 70, 0.7);
+            border-radius: 20px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .album-art {
+            width: 100%;
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .music-icon {
+            width: 120px;
+            height: 120px;
+            opacity: 0.5;
+        }
+
+        .music-icon path {
+            fill: #fff;
+        }
+
+        .status {
+            color: #aaa;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .song-title {
+            color: #fff;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            margin-bottom: 30px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .progress {
+            height: 100%;
+            background: #764ba2;
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.1s;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .control-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.1);
+        }
+
+        .play-btn {
+            width: 70px;
+            height: 70px;
+            background: #fff;
+            color: #2d1b3d;
+        }
+
+        .play-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .search-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .search-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            padding: 15px 20px;
+            border-radius: 25px;
+            color: #fff;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .search-results {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .song-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .song-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .song-thumbnail {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+
+        .song-info {
+            flex: 1;
+        }
+
+        .song-name {
+            color: #fff;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .song-artist {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .icon {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+
+        .icon-large {
+            width: 40px;
+            height: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="search-box">
-        <input id="search" placeholder="Search any song">
-        <button onclick="searchTracks()">Search</button>
-    </div>
-    <div id="results"></div>
-    <div class="player">
-        <div id="now-playing">Not Playing</div>
-        <button onclick="prevTrack()">⏮</button>
-        <button id="play-pause" onclick="togglePlay()">▶</button>
-        <button onclick="nextTrack()">⏭</button>
-        <audio id="audio" controls style="display:none;"></audio>
+    <div class="container">
+        <div class="player-card">
+            <div class="album-art" id="albumArt">
+                <svg class="music-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                </svg>
+            </div>
+            <div class="status" id="status">---- Not Playing</div>
+            <div class="song-title" id="currentSong">Arcora v5</div>
+            <div class="progress-bar" id="progressBar">
+                <div class="progress" id="progress"></div>
+            </div>
+            <div class="controls">
+                <button class="control-btn" onclick="toggleRepeat()">
+                    <svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/>
+                    </svg>
+                </button>
+                <button class="control-btn" onclick="previousSong()">
+                    <svg class="icon-large" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+                    </svg>
+                </button>
+                <button class="control-btn play-btn" onclick="togglePlay()" id="playBtn">
+                    <svg class="icon-large" id="playIcon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                </button>
+                <button class="control-btn" onclick="nextSong()">
+                    <svg class="icon-large" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+                    </svg>
+                </button>
+                <button class="control-btn" onclick="toggleMute()">
+                    <svg class="icon" id="volumeIcon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="search-card">
+            <div class="search-header">
+                <svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="white"/>
+                </svg>
+                <input type="text" class="search-input" placeholder="Search any song" id="searchInput">
+                <svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" fill="white"/>
+                </svg>
+            </div>
+            <div class="search-results" id="searchResults">
+                <!-- Demo songs -->
+                <div class="song-item" onclick="playSong('Summer Breeze', 'Coastal Waves')">
+                    <div class="song-thumbnail"></div>
+                    <div class="song-info">
+                        <div class="song-name">Summer Breeze</div>
+                        <div class="song-artist">Coastal Waves</div>
+                    </div>
+                </div>
+                <div class="song-item" onclick="playSong('Midnight Dreams', 'Luna Echo')">
+                    <div class="song-thumbnail"></div>
+                    <div class="song-info">
+                        <div class="song-name">Midnight Dreams</div>
+                        <div class="song-artist">Luna Echo</div>
+                    </div>
+                </div>
+                <div class="song-item" onclick="playSong('Electric Soul', 'The Rhythm Makers')">
+                    <div class="song-thumbnail"></div>
+                    <div class="song-info">
+                        <div class="song-name">Electric Soul</div>
+                        <div class="song-artist">The Rhythm Makers</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        const CLIENT_ID = 'YOUR_CLIENT_ID';
-        const CLIENT_SECRET = 'YOUR_CLIENT_SECRET';
-        let accessToken = '';
-        let currentTrack = null;
-        let audio = document.getElementById('audio');
+        let isPlaying = false;
+        let isMuted = false;
+        let isRepeat = false;
 
-        // Get token (simplified; use full OAuth flow)
-        async function getToken() {
-            const res = await fetch('https://auth.tidal.com/v1/oauth2/token', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `grant_type=client_credentials&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}`
-            });
-            const data = await res.json();
-            accessToken = data.access_token;
-        }
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            // In a real implementation, this would call the Tidal API
+            console.log('Searching for:', query);
+        });
 
-        async function searchTracks() {
-            await getToken();
-            const query = document.getElementById('search').value;
-            const res = await fetch(`https://api.tidal.com/v1/search?query=${query}&types=tracks&limit=10`, {
-                headers: { 'Authorization': `Bearer ${accessToken}` }
-            });
-            const data = await res.json();
-            const results = document.getElementById('results');
-            results.innerHTML = data.results.tracks.items.map(track => 
-                `<div onclick="playTrack('${track.id}')">${track.title} - ${track.artist.name}</div>`
-            ).join('');
-        }
-
-        async function playTrack(id) {
-            const res = await fetch(`https://api.tidal.com/v1/tracks/${id}?include=items`, {
-                headers: { 'Authorization': `Bearer ${accessToken}` }
-            });
-            currentTrack = await res.json();
-            // Get stream URL (requires full auth/user token for playback)
-            const streamRes = await fetch(`https://api.tidal.com/v1/tracks/${id}/urls?formats=ALAC`, {
-                headers: { 'Authorization': `Bearer ${accessToken}` }
-            });
-            const urls = await streamRes.json();
-            audio.src = urls.urls[0].url; // Pick quality
-            audio.play();
-            document.getElementById('now-playing').textContent = currentTrack.title;
-            document.getElementById('play-pause').textContent = '⏸';
+        function playSong(title, artist) {
+            document.getElementById('currentSong').textContent = title;
+            document.getElementById('status').textContent = '▶ Playing';
+            isPlaying = true;
+            updatePlayButton();
+            
+            // Simulate progress
+            let progress = 0;
+            setInterval(() => {
+                if (isPlaying && progress < 100) {
+                    progress += 0.5;
+                    document.getElementById('progress').style.width = progress + '%';
+                }
+            }, 1000);
         }
 
         function togglePlay() {
-            if (audio.paused) {
-                audio.play();
-                document.getElementById('play-pause').textContent = '⏸';
+            isPlaying = !isPlaying;
+            document.getElementById('status').textContent = isPlaying ? '▶ Playing' : '---- Not Playing';
+            updatePlayButton();
+        }
+
+        function updatePlayButton() {
+            const icon = document.getElementById('playIcon');
+            if (isPlaying) {
+                icon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
             } else {
-                audio.pause();
-                document.getElementById('play-pause').textContent = '▶';
+                icon.innerHTML = '<path d="M8 5v14l11-7z"/>';
             }
         }
 
-        // Stub prev/next
-        function prevTrack() { /* Implement queue */ }
-        function nextTrack() { /* Implement queue */ }
+        function previousSong() {
+            console.log('Previous song');
+        }
+
+        function nextSong() {
+            console.log('Next song');
+        }
+
+        function toggleMute() {
+            isMuted = !isMuted;
+            const icon = document.getElementById('volumeIcon');
+            if (isMuted) {
+                icon.innerHTML = '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>';
+            } else {
+                icon.innerHTML = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>';
+            }
+        }
+
+        function toggleRepeat() {
+            isRepeat = !isRepeat;
+            console.log('Repeat:', isRepeat);
+        }
+
+        // Progress bar click
+        document.getElementById('progressBar').addEventListener('click', (e) => {
+            const rect = e.currentTarget.getBoundingClientRect();
+            const percent = ((e.clientX - rect.left) / rect.width) * 100;
+            document.getElementById('progress').style.width = percent + '%';
+        });
     </script>
 </body>
 </html>
