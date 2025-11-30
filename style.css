@@ -62,26 +62,23 @@ main {
 
 .track {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 15px;
+    gap: 10px;
     padding: 10px;
     background-color: #282828;
     border-radius: 5px;
 }
 
 .track img {
-    width: 60px;
-    height: 60px;
+    width: 120px;
+    height: 120px;
     object-fit: cover;
     border-radius: 5px;
 }
 
-.track-info {
-    flex: 1;
-}
-
 .track-info p {
-    margin: 0;
+    margin: 5px 0;
 }
 
 .track button {
@@ -93,14 +90,8 @@ main {
     border-radius: 3px;
 }
 
-.player-container {
-    margin-top: 30px;
-    text-align: center;
-}
-
-footer {
-    text-align: center;
-    padding: 10px;
-    background-color: #1DB954;
-    margin-top: 30px;
+iframe {
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
 }
