@@ -1,97 +1,63 @@
 body {
     font-family: Arial, sans-serif;
-    margin: 0;
     background-color: #121212;
-    color: #ffffff;
+    color: #fff;
+    margin: 0;
+    text-align: center;
 }
 
 header {
-    background-color: #1DB954;
+    background-color: #FF0000;
     padding: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
-header h1 {
-    margin: 5px;
-}
-
-nav a {
-    margin: 0 10px;
-    text-decoration: none;
-    color: #ffffff;
-    font-weight: bold;
-}
-
-main {
-    padding: 20px;
-    max-width: 800px;
-    margin: auto;
+h1 {
+    margin: 0;
 }
 
 .search-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
+    margin: 20px 0;
 }
 
 .search-container input {
     padding: 10px;
-    width: 60%;
-    border-radius: 5px 0 0 5px;
-    border: none;
+    width: 300px;
     font-size: 16px;
 }
 
 .search-container button {
     padding: 10px;
-    border: none;
-    background-color: #1DB954;
-    color: #fff;
     font-size: 16px;
-    border-radius: 0 5px 5px 0;
+    background-color: #FF0000;
+    color: #fff;
+    border: none;
     cursor: pointer;
+}
+
+.player-container {
+    margin: 20px auto;
 }
 
 .results {
+    margin-top: 20px;
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 15px;
 }
 
-.track {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    padding: 10px;
-    background-color: #282828;
-    border-radius: 5px;
-}
-
-.track img {
-    width: 120px;
-    height: 120px;
-    object-fit: cover;
-    border-radius: 5px;
-}
-
-.track-info p {
-    margin: 5px 0;
-}
-
-.track button {
-    padding: 5px 10px;
-    border: none;
-    background-color: #1DB954;
-    color: #fff;
+.video-card {
+    width: 200px;
     cursor: pointer;
-    border-radius: 3px;
+    text-align: left;
 }
 
-iframe {
-    margin-top: 10px;
-    border: none;
+.video-card img {
+    width: 100%;
     border-radius: 5px;
+}
+
+.video-card p {
+    margin: 5px 0 0 0;
+    font-size: 14px;
 }

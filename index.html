@@ -1,37 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Music Streamer</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YouTube Watcher</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <h1>🎵 Music Streamer</h1>
-        <nav>
-            <a href="#">Browse</a>
-            <a href="#">Charts</a>
-            <a href="#">Develop</a>
-            <a href="#">Talk</a>
-            <a href="#">Login</a>
-            <a href="#">Signup</a>
-        </nav>
-    </header>
+<header>
+    <h1>🎥 YouTube Watcher</h1>
+</header>
 
-    <main>
-        <div class="search-container">
-            <input id="search" type="text" placeholder="Search for a song or artist...">
-            <button onclick="searchSong()">Search</button>
-        </div>
+<main>
+    <div class="search-container">
+        <input id="search" type="text" placeholder="Search YouTube...">
+        <button onclick="searchVideos()">Search</button>
+    </div>
 
-        <div id="results" class="results"></div>
-    </main>
+    <div class="player-container">
+        <iframe id="player" width="640" height="360" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
+    </div>
 
-    <footer>
-        <p>Powered by TheAudioDB API</p>
-    </footer>
+    <div id="results" class="results"></div>
+</main>
 
-    <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
