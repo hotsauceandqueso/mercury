@@ -46,6 +46,13 @@
             align-items: center;
             justify-content: center;
             margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .album-art img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .music-icon {
@@ -114,6 +121,11 @@
             transform: scale(1.1);
         }
 
+        .control-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
         .play-btn {
             width: 70px;
             height: 70px;
@@ -129,7 +141,7 @@
             display: flex;
             align-items: center;
             gap: 15px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .search-input {
@@ -147,9 +159,53 @@
             color: rgba(255, 255, 255, 0.5);
         }
 
+        .engine-select {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 15px;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .engine-select option {
+            background: #2d1b3d;
+            color: #fff;
+        }
+
+        .search-btn {
+            background: #764ba2;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .search-btn:hover {
+            background: #8b5cb8;
+            transform: scale(1.05);
+        }
+
         .search-results {
             max-height: 500px;
             overflow-y: auto;
+        }
+
+        .loading {
+            text-align: center;
+            color: #aaa;
+            padding: 20px;
+        }
+
+        .error {
+            text-align: center;
+            color: #ff6b6b;
+            padding: 20px;
         }
 
         .song-item {
@@ -175,6 +231,13 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 8px;
             flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .song-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .song-info {
@@ -208,6 +271,10 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        audio {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -219,7 +286,7 @@
                 </svg>
             </div>
             <div class="status" id="status">---- Not Playing</div>
-            <div class="song-title" id="currentSong">Arcora v5</div>
+            <div class="song-title" id="currentSong">Search for music</div>
             <div class="progress-bar" id="progressBar">
                 <div class="progress" id="progress"></div>
             </div>
@@ -229,17 +296,17 @@
                         <path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/>
                     </svg>
                 </button>
-                <button class="control-btn" onclick="previousSong()">
+                <button class="control-btn" onclick="previousSong()" disabled>
                     <svg class="icon-large" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
                     </svg>
                 </button>
-                <button class="control-btn play-btn" onclick="togglePlay()" id="playBtn">
+                <button class="control-btn play-btn" onclick="togglePlay()" id="playBtn" disabled>
                     <svg class="icon-large" id="playIcon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path d="M8 5v14l11-7z"/>
                     </svg>
                 </button>
-                <button class="control-btn" onclick="nextSong()">
+                <button class="control-btn" onclick="nextSong()" disabled>
                     <svg class="icon-large" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
                     </svg>
@@ -258,69 +325,166 @@
                     <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="white"/>
                 </svg>
                 <input type="text" class="search-input" placeholder="Search any song" id="searchInput">
-                <svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" fill="white"/>
-                </svg>
+                <select class="engine-select" id="engineSelect">
+                    <option value="gaama">Gaama</option>
+                    <option value="seevn">Seevn</option>
+                    <option value="hunjama">Hunjama</option>
+                    <option value="mtmusic">MTMusic</option>
+                    <option value="wunk">Wunk</option>
+                </select>
+                <button class="search-btn" onclick="searchMusic()">Search</button>
             </div>
             <div class="search-results" id="searchResults">
-                <!-- Demo songs -->
-                <div class="song-item" onclick="playSong('Summer Breeze', 'Coastal Waves')">
-                    <div class="song-thumbnail"></div>
-                    <div class="song-info">
-                        <div class="song-name">Summer Breeze</div>
-                        <div class="song-artist">Coastal Waves</div>
-                    </div>
-                </div>
-                <div class="song-item" onclick="playSong('Midnight Dreams', 'Luna Echo')">
-                    <div class="song-thumbnail"></div>
-                    <div class="song-info">
-                        <div class="song-name">Midnight Dreams</div>
-                        <div class="song-artist">Luna Echo</div>
-                    </div>
-                </div>
-                <div class="song-item" onclick="playSong('Electric Soul', 'The Rhythm Makers')">
-                    <div class="song-thumbnail"></div>
-                    <div class="song-info">
-                        <div class="song-name">Electric Soul</div>
-                        <div class="song-artist">The Rhythm Makers</div>
-                    </div>
+                <div style="text-align: center; color: #aaa; padding: 40px;">
+                    Enter a song name and click Search
                 </div>
             </div>
         </div>
     </div>
 
+    <audio id="audioPlayer"></audio>
+
     <script>
+        const API_BASE = 'https://musicapi.x007.workers.dev';
         let isPlaying = false;
         let isMuted = false;
         let isRepeat = false;
+        let currentSongData = null;
+        let searchResults = [];
+        let currentIndex = -1;
 
-        // Search functionality
-        document.getElementById('searchInput').addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase();
-            // In a real implementation, this would call the Tidal API
-            console.log('Searching for:', query);
+        const audioPlayer = document.getElementById('audioPlayer');
+
+        // Audio player event listeners
+        audioPlayer.addEventListener('timeupdate', () => {
+            if (audioPlayer.duration) {
+                const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+                document.getElementById('progress').style.width = progress + '%';
+            }
         });
 
-        function playSong(title, artist) {
-            document.getElementById('currentSong').textContent = title;
-            document.getElementById('status').textContent = '▶ Playing';
+        audioPlayer.addEventListener('ended', () => {
+            if (isRepeat) {
+                audioPlayer.play();
+            } else {
+                nextSong();
+            }
+        });
+
+        audioPlayer.addEventListener('play', () => {
             isPlaying = true;
             updatePlayButton();
+            document.getElementById('status').textContent = '▶ Playing';
+        });
+
+        audioPlayer.addEventListener('pause', () => {
+            isPlaying = false;
+            updatePlayButton();
+            document.getElementById('status').textContent = '⏸ Paused';
+        });
+
+        // Search on Enter key
+        document.getElementById('searchInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                searchMusic();
+            }
+        });
+
+        async function searchMusic() {
+            const query = document.getElementById('searchInput').value.trim();
+            const engine = document.getElementById('engineSelect').value;
             
-            // Simulate progress
-            let progress = 0;
-            setInterval(() => {
-                if (isPlaying && progress < 100) {
-                    progress += 0.5;
-                    document.getElementById('progress').style.width = progress + '%';
+            if (!query) {
+                alert('Please enter a song name');
+                return;
+            }
+
+            const resultsDiv = document.getElementById('searchResults');
+            resultsDiv.innerHTML = '<div class="loading">Searching...</div>';
+
+            try {
+                const response = await fetch(`${API_BASE}/search?q=${encodeURIComponent(query)}&searchEngine=${engine}`);
+                const data = await response.json();
+
+                if (data.status === 200 && data.response && data.response.length > 0) {
+                    searchResults = data.response;
+                    displayResults(data.response);
+                } else {
+                    resultsDiv.innerHTML = '<div class="error">No results found. Try a different search engine or song name.</div>';
                 }
-            }, 1000);
+            } catch (error) {
+                console.error('Search error:', error);
+                resultsDiv.innerHTML = '<div class="error">Search failed. The API might be temporarily unavailable.</div>';
+            }
+        }
+
+        function displayResults(results) {
+            const resultsDiv = document.getElementById('searchResults');
+            resultsDiv.innerHTML = '';
+
+            results.forEach((song, index) => {
+                const songItem = document.createElement('div');
+                songItem.className = 'song-item';
+                songItem.onclick = () => playSongById(song.id, index);
+
+                songItem.innerHTML = `
+                    <div class="song-thumbnail">
+                        ${song.img ? `<img src="${song.img}" alt="${song.title}">` : ''}
+                    </div>
+                    <div class="song-info">
+                        <div class="song-name">${song.title}</div>
+                        <div class="song-artist">Click to play</div>
+                    </div>
+                `;
+
+                resultsDiv.appendChild(songItem);
+            });
+        }
+
+        async function playSongById(songId, index) {
+            currentIndex = index;
+            const resultsDiv = document.getElementById('searchResults');
+            resultsDiv.innerHTML = '<div class="loading">Loading song...</div>';
+
+            try {
+                const response = await fetch(`${API_BASE}/fetch?id=${songId}`);
+                const data = await response.json();
+
+                if (data.status === 200 && data.response) {
+                    currentSongData = searchResults[index];
+                    
+                    // Update UI
+                    document.getElementById('currentSong').textContent = currentSongData.title;
+                    const albumArt = document.getElementById('albumArt');
+                    if (currentSongData.img) {
+                        albumArt.innerHTML = `<img src="${currentSongData.img}" alt="${currentSongData.title}">`;
+                    }
+
+                    // Load and play audio
+                    audioPlayer.src = data.response;
+                    audioPlayer.play();
+                    
+                    document.getElementById('playBtn').disabled = false;
+                    
+                    // Restore search results
+                    displayResults(searchResults);
+                } else {
+                    resultsDiv.innerHTML = '<div class="error">Failed to load song. Try another one.</div>';
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
+                resultsDiv.innerHTML = '<div class="error">Failed to load song. Try another one.</div>';
+            }
         }
 
         function togglePlay() {
-            isPlaying = !isPlaying;
-            document.getElementById('status').textContent = isPlaying ? '▶ Playing' : '---- Not Playing';
-            updatePlayButton();
+            if (!audioPlayer.src) return;
+            
+            if (isPlaying) {
+                audioPlayer.pause();
+            } else {
+                audioPlayer.play();
+            }
         }
 
         function updatePlayButton() {
@@ -333,15 +497,20 @@
         }
 
         function previousSong() {
-            console.log('Previous song');
+            if (currentIndex > 0) {
+                playSongById(searchResults[currentIndex - 1].id, currentIndex - 1);
+            }
         }
 
         function nextSong() {
-            console.log('Next song');
+            if (currentIndex < searchResults.length - 1) {
+                playSongById(searchResults[currentIndex + 1].id, currentIndex + 1);
+            }
         }
 
         function toggleMute() {
-            isMuted = !isMuted;
+            audioPlayer.muted = !audioPlayer.muted;
+            isMuted = audioPlayer.muted;
             const icon = document.getElementById('volumeIcon');
             if (isMuted) {
                 icon.innerHTML = '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>';
@@ -352,14 +521,15 @@
 
         function toggleRepeat() {
             isRepeat = !isRepeat;
-            console.log('Repeat:', isRepeat);
+            audioPlayer.loop = isRepeat;
         }
 
         // Progress bar click
         document.getElementById('progressBar').addEventListener('click', (e) => {
+            if (!audioPlayer.src) return;
             const rect = e.currentTarget.getBoundingClientRect();
-            const percent = ((e.clientX - rect.left) / rect.width) * 100;
-            document.getElementById('progress').style.width = percent + '%';
+            const percent = (e.clientX - rect.left) / rect.width;
+            audioPlayer.currentTime = percent * audioPlayer.duration;
         });
     </script>
 </body>
