@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Working Music Player - Nov 2025</title>
+    <title>Working Music Player</title>
     <style>
         body { font-family: sans-serif; background: #1e1e2e; color: white; display: flex; justify-content: center; padding: 20px; }
         .container { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; max-width: 1200px; }
@@ -25,30 +25,41 @@
         </div>
         <div class="card">
             <h2>Search</h2>
-            <input type="text" id="query" placeholder="Song name" style="width:60%;">
+            <input type="text" id="query" placeholder="Song name" style="width:50%;">
+            <select id="engine">
+                <option value="gaama">Gaama</option>
+                <option value="seevn">Seevn</option>
+                <option value="hunjama">Hunjama</option>
+                <option value="mtmusic">MTMusic</option>
+                <option value="wunk">Wunk</option>
+            </select>
             <button onclick="search()">Search</button>
             <div class="results" id="results"></div>
         </div>
     </div>
 
     <script>
-        // Working proxy (from 2025 tests)
-        const PROXY = 'https://api.codetabs.com/v1/proxy?quest=';
-        const API = 'https://api.musicfy.lol';  // Live API
+        const API = 'https://musicapi.x007.workers.dev';
 
         async function search() {
             const query = document.getElementById('query').value.trim();
+            const engine = document.getElementById('engine').value;
             if (!query) return;
             document.getElementById('results').innerHTML = '<p>Searching...</p>';
             try {
-                const url = `${PROXY}${encodeURIComponent(`${API}/search?query=${encodeURIComponent(query)}`)}`;
-                const res = await fetch(url);
-                const data = await res.text();  // Raw text for proxy
-                const json = JSON.parse(data);
-                if (json.data && json.data.length > 0) {
-                    showResults(json.data);
+                // Direct fetch (CORS ok); fallback proxy if blocked
+                let url = `${API}/search?q=${encodeURIComponent(query)}&searchEngine=${engine}`;
+                let res = await fetch(url);
+                if (!res.ok) {
+                    // Fallback proxy
+                    url = `https://corsproxy.io/?${encodeURIComponent(url)}`;
+                    res = await fetch(url);
+                }
+                const data = await res.json();
+                if (data.status === 200 && data.response?.length > 0) {
+                    showResults(data.response);
                 } else {
-                    document.getElementById('results').innerHTML = '<p>No results. Try another song.</p>';
+                    document.getElementById('results').innerHTML = '<p>No results. Try another engine/song.</p>';
                 }
             } catch (e) {
                 document.getElementById('results').innerHTML = '<p>Error. Try again.</p>';
@@ -62,21 +73,24 @@
             tracks.forEach(track => {
                 const item = document.createElement('div');
                 item.className = 'song';
-                item.innerHTML = `<strong>${track.title}</strong><br><small>${track.artist.name}</small>`;
-                item.onclick = () => play(track.id, track.title, track.artist.name);
+                item.innerHTML = `<strong>${track.title || 'Unknown'}</strong><br><small>${track.artist || ''}</small>`;
+                item.onclick = () => play(track.id, track.title, track.artist);
                 div.appendChild(item);
             });
         }
 
         async function play(id, title, artist) {
-            document.getElementById('title').textContent = `${title} - ${artist}`;
+            document.getElementById('title').textContent = `${title} - ${artist || ''}`;
             try {
-                const url = `${PROXY}${encodeURIComponent(`${API}/song?id=${id}`)}`;
-                const res = await fetch(url);
-                const data = await res.text();
-                const json = JSON.parse(data);
-                if (json.data && json.data[320]) {  // 320kbps stream
-                    document.getElementById('audio').src = json.data[320].link;
+                let url = `${API}/fetch?id=${id}`;
+                let res = await fetch(url);
+                if (!res.ok) {
+                    url = `https://corsproxy.io/?${encodeURIComponent(url)}`;
+                    res = await fetch(url);
+                }
+                const data = await res.json();
+                if (data.status === 200 && data.response) {
+                    document.getElementById('audio').src = data.response;
                     document.getElementById('audio').play();
                 } else {
                     alert('No stream available.');
@@ -86,7 +100,6 @@
             }
         }
 
-        // Enter key search
         document.getElementById('query').addEventListener('keypress', e => {
             if (e.key === 'Enter') search();
         });
