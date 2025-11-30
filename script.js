@@ -1,26 +1,40 @@
-function searchVideos() {
+const API_KEY = 'AIzaSyBMOMNiDI-ASbl61gv-fecfxETRTjOznxo'; // Replace with your API key from Google Cloud
+
+async function searchVideos() {
     const query = document.getElementById('search').value.trim();
     if (!query) return;
 
     const resultsDiv = document.getElementById('results');
-    resultsDiv.innerHTML = '';
+    resultsDiv.innerHTML = 'Searching...';
 
-    // Use noembed.com to get info for top 5 YouTube videos
-    const videos = [
-        `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`
-    ];
+    try {
+        const response = await fetch(
+            `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=10&q=${encodeURIComponent(query)}&key=${API_KEY}`
+        );
+        const data = await response.json();
 
-    // For demo purposes, create placeholder search results
-    for (let i = 1; i <= 5; i++) {
-        const videoId = "dQw4w9WgXcQ"; // Placeholder video
-        const card = document.createElement('div');
-        card.className = 'video-card';
-        card.innerHTML = `
-            <img src="https://img.youtube.com/vi/${videoId}/mqdefault.jpg" alt="Video Thumbnail">
-            <p>${query} Video ${i}</p>
-        `;
-        card.onclick = () => playVideo(videoId);
-        resultsDiv.appendChild(card);
+        resultsDiv.innerHTML = '';
+        if (data.items && data.items.length > 0) {
+            data.items.forEach(item => {
+                const videoId = item.id.videoId;
+                const title = item.snippet.title;
+                const thumbnail = item.snippet.thumbnails.medium.url;
+
+                const card = document.createElement('div');
+                card.className = 'video-card';
+                card.innerHTML = `
+                    <img src="${thumbnail}" alt="${title}">
+                    <p>${title}</p>
+                `;
+                card.onclick = () => playVideo(videoId);
+                resultsDiv.appendChild(card);
+            });
+        } else {
+            resultsDiv.innerHTML = '<p>No results found.</p>';
+        }
+    } catch (err) {
+        resultsDiv.innerHTML = '<p>Error fetching videos. Try again later.</p>';
+        console.error(err);
     }
 }
 
