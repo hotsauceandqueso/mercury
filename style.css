@@ -1,0 +1,106 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #121212;
+    color: #ffffff;
+}
+
+header {
+    background-color: #1DB954;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header h1 {
+    margin: 5px;
+}
+
+nav a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+main {
+    padding: 20px;
+    max-width: 800px;
+    margin: auto;
+}
+
+.search-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.search-container input {
+    padding: 10px;
+    width: 60%;
+    border-radius: 5px 0 0 5px;
+    border: none;
+    font-size: 16px;
+}
+
+.search-container button {
+    padding: 10px;
+    border: none;
+    background-color: #1DB954;
+    color: #fff;
+    font-size: 16px;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+}
+
+.results {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.track {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+    background-color: #282828;
+    border-radius: 5px;
+}
+
+.track img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.track-info {
+    flex: 1;
+}
+
+.track-info p {
+    margin: 0;
+}
+
+.track button {
+    padding: 5px 10px;
+    border: none;
+    background-color: #1DB954;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.player-container {
+    margin-top: 30px;
+    text-align: center;
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #1DB954;
+    margin-top: 30px;
+}
