@@ -1,34 +1,89 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Free Legal Music Player</title>
-  <style>body{font-family:Arial;background:#111;color:#fff;text-align:center;padding:50px}</style>
-</head>
-<body>
-  <h1>Free Legal Music Search</h1>
-  <input type="text" id="query" placeholder="Search song" style="padding:10px;font-size:18px;width:300px">
-  <button onclick="search()" style="padding:10px 20px;font-size:18px">Search</button>
-  <div id="results"></div>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<title>hotsauceandqueso</title>
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+		<style>
+			:root{
+				--bg-1: #0f172a; /* deep navy */
+				--bg-2: #0ea5e9; /* cyan */
+				--bg-3: #3b82f6; /* blue */
+			}
 
-  <script>
-    async function search() {
-      const q = document.getElementById('query').value;
-      if (!q) return;
-      const res = await fetch(`https://api.jamendo.com/v3.0/tracks/?client_id=2c9a5b3f&format=jsonpretty&limit=20&search=${encodeURIComponent(q)}`);
-      const data = await res.json();
-      const results = document.getElementById('results');
-      results.innerHTML = '';
-      data.results.forEach(track => {
-        results.innerHTML += `
-          <div style="margin:20px;padding:20px;background:#222;border-radius:10px">
-            <h3>${track.name} - ${track.artist_name}</h3>
-            <audio controls src="${track.audio}"></audio><br>
-            <a href="${track.shareurl}" target="_blank">Open on Jamendo</a>
-          </div>`;
-      });
-    }
-  </script>
-</body>
+			html,body{height:100%;}
+			body{
+				margin:0;
+				font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+				-webkit-font-smoothing:antialiased;
+				-moz-osx-font-smoothing:grayscale;
+				display:grid;
+				place-items:center;
+				background: radial-gradient(1200px 600px at 10% 20%, rgba(59,130,246,0.14), transparent),
+										radial-gradient(1000px 500px at 90% 80%, rgba(14,165,233,0.12), transparent),
+										linear-gradient(135deg, var(--bg-1), #071235 30%, var(--bg-3) 60%, var(--bg-2) 100%);
+				color: #fff;
+			}
+
+			.card{
+				text-align:center;
+				padding: clamp(2rem, 5vw, 5rem);
+				border-radius: 18px;
+				backdrop-filter: blur(6px) saturate(120%);
+				-webkit-backdrop-filter: blur(6px) saturate(120%);
+				box-shadow: 0 6px 30px rgba(2,6,23,0.55), inset 0 1px 0 rgba(255,255,255,0.03);
+				max-width: 1100px;
+				width: calc(100% - 48px);
+			}
+
+			h1{
+				margin:0 0 .35em 0;
+				font-weight:900;
+				letter-spacing: -0.02em;
+				font-size: clamp(2.8rem, 12vw, 8rem);
+				line-height: .92;
+				color: #fff;
+				text-shadow: 0 6px 24px rgba(8,17,48,0.6), 0 1px 0 rgba(255,255,255,0.03);
+				display:inline-block;
+				padding: .1em .35em;
+				background: linear-gradient(90deg, rgba(255,255,255,0.92), rgba(255,255,255,0.95));
+				color: transparent;
+				-webkit-background-clip: text;
+				background-clip: text;
+			}
+
+			p.lead{
+				margin:0;
+				margin-top:.6rem;
+				color: rgba(255,255,255,0.9);
+				font-weight:400;
+				font-size: clamp(.9rem, 1.8vw, 1.25rem);
+				opacity:.9;
+			}
+
+			/* Small accent line */
+			.accent{
+				height: 6px;
+				width: 90px;
+				margin: 24px auto 18px;
+				border-radius: 999px;
+				background: linear-gradient(90deg, #60a5fa, #06b6d4);
+				box-shadow: 0 4px 18px rgba(8,17,48,0.45);
+			}
+
+			@media (max-width:520px){
+				.card{ padding: 2rem; }
+			}
+		</style>
+	</head>
+	<body>
+		<main class="card" role="main" aria-label="About hotsauceandqueso">
+			<div class="accent" aria-hidden="true"></div>
+			<h1>hotsauceandqueso</h1>
+			<p class="lead">A small corner of the internet. I like good spice, good queso, and clean design.</p>
+		</main>
+	</body>
 </html>
+
