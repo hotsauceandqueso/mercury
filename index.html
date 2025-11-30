@@ -345,7 +345,14 @@
     <audio id="audioPlayer"></audio>
 
     <script>
-        const API_BASE = 'https://musicapi.x007.workers.dev';
+        // Multiple API options - will try each one if others fail
+        const API_OPTIONS = [
+            'https://musicapi.x007.workers.dev',
+            'https://api.allorigins.win/raw?url=https://musicapi.x007.workers.dev',
+            'https://corsproxy.io/?https://musicapi.x007.workers.dev'
+        ];
+        let currentAPIIndex = 0;
+        
         let isPlaying = false;
         let isMuted = false;
         let isRepeat = false;
