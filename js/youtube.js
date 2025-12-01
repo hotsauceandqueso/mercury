@@ -27,6 +27,7 @@ async function searchVideos() {
                     <img src="${thumbnail}" alt="${title}">
                     <p>${title}</p>
                 `;
+                // Use no-cookie embed
                 card.onclick = () => playVideo(videoId);
                 resultsDiv.appendChild(card);
             });
@@ -41,6 +42,7 @@ async function searchVideos() {
 
 function playVideo(videoId) {
     const player = document.getElementById('player');
-    player.src = `https://www.youtube.com/embed/${videoId}`;
+    // NO-COOKIE embed
+    player.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1`;
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
