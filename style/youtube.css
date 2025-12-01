@@ -16,7 +16,19 @@ html, body {
     left: 0;
     width: 100vw;         /* full viewport width */
     height: 100vh;        /* full viewport height */
-    z-index: -1;          /* behind all other content */
+    pointer-events: none; /* clicks go through */
+    z-index: 0;           /* base layer, avoid negative z-index issues */
+}
+
+/* Ensure main content stacks above canvas */
+body > header,
+body > main,
+body > footer,
+.player-container,
+.results,
+.video-card {
+    position: relative;
+    z-index: 1;           /* above canvas */
 }
 
 /* Header */
@@ -51,8 +63,6 @@ main {
     max-width: 1200px;
     margin: 20px auto;
     padding: 0 15px;
-    position: relative; /* ensure content stays above canvas */
-    z-index: 1;
 }
 
 /* Search bar */
@@ -95,8 +105,6 @@ main {
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-    position: relative;
-    z-index: 1;
 }
 
 /* Search results */
@@ -105,8 +113,6 @@ main {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 20px;
-    position: relative;
-    z-index: 1;
 }
 
 .video-card {
@@ -143,6 +149,4 @@ footer {
     margin: 40px 0 20px 0;
     color: #aaa;
     font-size: 14px;
-    position: relative;
-    z-index: 1;
 }
