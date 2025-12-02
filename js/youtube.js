@@ -46,3 +46,11 @@ function playVideo(videoId) {
     player.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1`;
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+// Trigger search when Enter key is pressed
+document.getElementById('search').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        searchVideos();
+    }
+});
+
