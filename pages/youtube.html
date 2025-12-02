@@ -7,7 +7,67 @@
 <link rel="stylesheet" href="../style/youtube.css">
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-/* Player container - larger, fills more screen */
+/* Header */
+header {
+    text-align: center;
+    padding: 40px 20px 20px 20px;
+    position: relative;
+    z-index: 1;
+}
+
+header h1 {
+    font-size: 3rem; /* bigger */
+    color: #fff;
+    margin: 0;
+}
+
+/* Centered search bar */
+.search-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0 40px 0;
+}
+
+.search-container input {
+    flex: 1;
+    max-width: 600px;
+    padding: 14px 20px;
+    font-size: 16px;
+    border-radius: 30px 0 0 30px;
+    border: 2px solid #007BFF;
+    outline: none;
+    background-color: rgba(0, 123, 255, 0.1);
+    color: #fff;
+    transition: 0.3s;
+}
+
+.search-container input::placeholder {
+    color: rgba(255,255,255,0.7);
+}
+
+.search-container input:focus {
+    background-color: rgba(0, 123, 255, 0.2);
+    border-color: #0056b3;
+}
+
+.search-container button {
+    padding: 14px 25px;
+    font-size: 16px;
+    background: linear-gradient(45deg, #007BFF, #0056b3);
+    border: none;
+    border-radius: 0 30px 30px 0;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.search-container button:hover {
+    background: linear-gradient(45deg, #0056b3, #003f7f);
+    transform: scale(1.05);
+}
+
+/* Player container - larger and responsive */
 .player-container {
     width: 95%;
     max-width: 1400px;
@@ -33,7 +93,7 @@
     gap: 20px;
     width: 95%;
     max-width: 1400px;
-    margin: 30px auto;
+    margin: 30px auto 60px auto;
 }
 
 .video-card {
@@ -70,7 +130,7 @@
 <canvas id="particle-canvas"></canvas>
 
 <header>
-    <h1>🎥 Mercury YouTube Watcher</h1>
+    <h1>Mercury YouTube Watcher</h1>
 </header>
 
 <main>
