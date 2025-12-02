@@ -27,7 +27,7 @@ async function searchVideos() {
                     <img src="${thumbnail}" alt="${title}">
                     <p>${title}</p>
                 `;
-                // Use no-cookie embed
+                // Play video in no-cookie iframe when clicked
                 card.onclick = () => playVideo(videoId);
                 resultsDiv.appendChild(card);
             });
@@ -42,15 +42,11 @@ async function searchVideos() {
 
 function playVideo(videoId) {
     const player = document.getElementById('player');
-    // NO-COOKIE embed
     player.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1`;
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // Trigger search when Enter key is pressed
-document.getElementById('search').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-        searchVideos();
-    }
+document.getElementById('search').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') searchVideos();
 });
-
