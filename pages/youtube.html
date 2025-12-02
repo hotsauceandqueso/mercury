@@ -7,13 +7,13 @@
 <link rel="stylesheet" href="../style/youtube.css">
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-/* Responsive YouTube iframe container */
+/* Player container - larger, fills more screen */
 .player-container {
-    width: 90%;
-    max-width: 1200px;
+    width: 95%;
+    max-width: 1400px;
     margin: 30px auto;
     position: relative;
-    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    padding-bottom: 56.25%; /* 16:9 ratio */
     height: 0;
 }
 
@@ -25,11 +25,48 @@
     height: 100%;
     border: 0;
 }
+
+/* Video results grid - 5 per row */
+.results {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+    width: 95%;
+    max-width: 1400px;
+    margin: 30px auto;
+}
+
+.video-card {
+    background-color: rgba(0,0,0,0.3);
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.video-card img {
+    width: 100%;
+    display: block;
+}
+
+.video-card p {
+    margin: 8px;
+    font-size: 0.9rem;
+    text-align: center;
+    color: #fff;
+}
+
+.video-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+}
 </style>
 </head>
 <body>  
 
-<!-- Particle Canvas -->
 <canvas id="particle-canvas"></canvas>
 
 <header>
@@ -43,7 +80,6 @@
     </div>
 
     <div class="player-container">
-        <!-- No-cookie embed -->
         <iframe id="player" 
             src="https://www.youtube-nocookie.com/embed/AtPO0agf8SY" 
             title="YouTube video player" 
@@ -59,8 +95,7 @@
     <p>Powered by YouTube Data API v3</p>
 </footer>
 
-<!-- Scripts -->
-<script src="../js/homepage.js"></script> <!-- particles reused -->
+<script src="../js/homepage.js"></script>
 <script src="../js/youtube.js"></script>
 </body>
 </html>
