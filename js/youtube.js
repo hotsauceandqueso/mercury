@@ -1,5 +1,5 @@
 const API_KEY = 'AIzaSyBMOMNiDI-ASbl61gv-fecfxETRTjOznxo';
-const MAX_RESULTS = 30; // 30 results
+const MAX_RESULTS = 30; // show 30 videos
 
 async function searchVideos() {
     const query = document.getElementById('search').value.trim();
@@ -40,11 +40,14 @@ async function searchVideos() {
 }
 
 function playVideo(videoId) {
+    const playerContainer = document.querySelector('.player-container');
     const player = document.getElementById('player');
     player.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1`;
+    playerContainer.style.display = 'block'; // show iframe
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+// Trigger search on Enter key
 document.getElementById('search').addEventListener('keydown', function(e) {
     if(e.key === 'Enter') searchVideos();
 });
