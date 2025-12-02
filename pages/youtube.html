@@ -16,7 +16,7 @@ header {
 }
 
 header h1 {
-    font-size: 3rem; /* bigger */
+    font-size: 3rem;
     color: #fff;
     margin: 0;
 }
@@ -67,14 +67,15 @@ header h1 {
     transform: scale(1.05);
 }
 
-/* Player container - larger and responsive */
+/* Player container - initially hidden */
 .player-container {
     width: 95%;
     max-width: 1400px;
     margin: 30px auto;
     position: relative;
-    padding-bottom: 56.25%; /* 16:9 ratio */
+    padding-bottom: 56.25%;
     height: 0;
+    display: none; /* hidden initially */
 }
 
 .player-container iframe {
@@ -141,7 +142,6 @@ header h1 {
 
     <div class="player-container">
         <iframe id="player" 
-            src="https://www.youtube-nocookie.com/embed/AtPO0agf8SY" 
             title="YouTube video player" 
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
             allowfullscreen>
