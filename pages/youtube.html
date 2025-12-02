@@ -60,24 +60,7 @@
 </footer>
 
 <!-- Scripts -->
+<script src="../js/homepage.js"></script> <!-- particles reused -->
 <script src="../js/youtube.js"></script>
-<script src="../js/homepage.js"></script> <!-- reused particle script -->
-
-<script>
-    // Search function for search bar
-    function searchVideos() {
-        const query = document.getElementById('search').value;
-        if(query) {
-            const url = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
-            window.open(url, '_blank');
-        }
-    }
-
-    // Trigger search on Enter key
-    document.getElementById('search').addEventListener('keydown', function(e) {
-        if(e.key === 'Enter') searchVideos();
-    });
-</script>
-
 </body>
 </html>
