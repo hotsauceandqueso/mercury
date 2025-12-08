@@ -5,10 +5,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Games - Mercury</title>
 
-    <!-- Same styling as homepage -->
+    <!-- Styles -->
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../style/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 20px;
+            padding: 40px;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .game-button {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            padding: 20px;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: 0.25s ease;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .game-button img {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 10px;
+        }
+
+        .game-button:hover {
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        header h1 {
+            text-align: center;
+            margin-top: 40px;
+            color: white;
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+    </style>
 </head>
 <body>
 
@@ -20,9 +69,26 @@
 </header>
 
 <main>
-    <p style="color:white; text-align:center; font-size:1.2rem;">
-        Welcome to the Games page!
-    </p>
+    <div class="games-grid">
+
+        <!-- Example game buttons -->
+        <a href="game1.html?id=1" class="game-button">
+            <img src="../assets/icons/game1.png" alt="Game 1">
+            <span>Game 1</span>
+        </a>
+
+        <a href="game2.html?id=2" class="game-button">
+            <img src="../assets/icons/game2.png" alt="Game 2">
+            <span>Game 2</span>
+        </a>
+
+        <a href="game3.html?id=3" class="game-button">
+            <img src="../assets/icons/game3.png" alt="Game 3">
+            <span>Game 3</span>
+        </a>
+
+        <!-- Add more by copy+paste -->
+    </div>
 </main>
 
 <footer>
@@ -32,6 +98,7 @@
 <!-- Particle scripts -->
 <script src="../particles.js"></script>
 <script src="../homepage.js"></script>
+
 <script src="../js/particles.js"></script>
 <script src="../js/homepage.js"></script>
 
