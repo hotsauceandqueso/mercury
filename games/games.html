@@ -89,32 +89,43 @@
 
 <div class="games-container">
     <div class="games-grid">
-        <!-- First button for your actual game -->
+        <!-- Explicit buttons for easy editing -->
+
+        <!-- You Are Bezos -->
         <a href="./YouAreBezos/youarebezos.html" class="game-button">
-            <img src="../assets/icons/placeholder.png" alt="YouAreBezos Icon">
+            <img src="../assets/icons/placeholder.png" alt="You Are Bezos Icon">
             <span>You Are Bezos</span>
         </a>
+
+        <!-- Slope -->
+        <a href="./slope/youareslope.html" class="game-button">
+            <img src="../assets/icons/placeholder.png" alt="Slope Icon">
+            <span>Slope</span>
+        </a>
+
+        <!-- Placeholder games -->
+        <a href="../games/game3.html" class="game-button">
+            <img src="../assets/icons/placeholder.png" alt="Game 3 Icon">
+            <span>Game 3</span>
+        </a>
+
+        <a href="../games/game4.html" class="game-button">
+            <img src="../assets/icons/placeholder.png" alt="Game 4 Icon">
+            <span>Game 4</span>
+        </a>
+
+        <a href="../games/game5.html" class="game-button">
+            <img src="../assets/icons/placeholder.png" alt="Game 5 Icon">
+            <span>Game 5</span>
+        </a>
+
+        <!-- Add more placeholders up to 40 as needed -->
     </div>
 </div>
 
 <footer>
     <p>© 2025 Mercury. All rights reserved.</p>
 </footer>
-
-<script>
-    // Generate remaining 39 placeholder buttons
-    const grid = document.querySelector(".games-grid");
-
-    // Start from i = 2 because first button is YouAreBezos
-    for (let i = 2; i <= 40; i++) {
-        grid.innerHTML += `
-            <a href="../games/game${i}.html" class="game-button">
-                <img src="../assets/icons/placeholder.png" alt="Game ${i} Icon">
-                <span>Game ${i}</span>
-            </a>
-        `;
-    }
-</script>
 
 <script src="../particles.js"></script>
 <script src="../homepage.js"></script>
