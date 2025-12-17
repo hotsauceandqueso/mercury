@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<style>
+		body, iframe { margin: 0; padding: 0; border: none; width: 100vw; height: 100vh; overflow: hidden; background-color: black; }
+	</style>
+</head>
+<body>
+	<iframe src="index.html"></iframe>
+	<script>(function(){
+		var frame = document.querySelector('iframe');
+		window.onmessage = (function(event){
+			if (event.data.actionResizeFrame) {
+				var height = Number(getComputedStyle(frame).height.split('px')[0]);
+				//frame.style.height = (frame.style.height ? null : ((height - 1).toString() + 'px'));
+				frame.style.height = ((height - 1).toString() + 'px');
+				setTimeout(function(){ frame.style.height = null; }, 400);
+			}
+		});
+	})();</script>
+</body>
+</html>
