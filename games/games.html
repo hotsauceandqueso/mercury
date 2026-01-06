@@ -19,40 +19,46 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
     <style>
+        /* Basic page setup */
         body {
             margin: 0;
-            overflow-x: hidden;
             font-family: 'Roboto', sans-serif;
+            background: #111;
+            color: white;
+            overflow-x: hidden;
         }
 
+        /* Header */
         header h1 {
             font-size: 6rem;
             text-align: center;
             color: white;
             text-shadow: 0 0 10px #fff, 0 0 20px #fff;
-            margin-top: 40px;
-            margin-bottom: 20px;
+            margin: 40px 0 20px 0;
             position: relative;
             z-index: 10;
         }
 
+        /* Games container */
         .games-container {
-            margin-top: 40px;
             padding: 20px;
             width: 100%;
-            position: relative;
-            z-index: 5;
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
         }
 
+        /* Responsive grid for buttons */
         .games-grid {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 25px;
+            justify-items: center;
             width: 100%;
-            max-width: 1600px;
-            margin: auto;
         }
 
+        /* Individual game button */
         .game-button {
             background: rgba(255, 255, 255, 0.12);
             backdrop-filter: blur(10px);
@@ -67,6 +73,8 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            width: 100%;
+            max-width: 260px;
             height: 200px;
         }
 
@@ -74,6 +82,13 @@
             width: 100px;
             height: 100px;
             margin-bottom: 12px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .game-button span {
+            font-size: 1.1rem;
+            font-weight: 500;
         }
 
         .game-button:hover {
@@ -81,10 +96,44 @@
             background: rgba(255, 255, 255, 0.20);
         }
 
+        /* Single centered button below grid */
+        .single-button {
+            display: flex;
+            justify-content: center;
+            margin-top: 60px;
+        }
+
+        .single-button .game-button {
+            width: 180px;
+            height: 80px;
+            padding: 10px;
+            font-size: 1.2rem;
+        }
+
+        /* Footer */
         footer {
             text-align: center;
             color: white;
             margin: 40px 0;
+        }
+
+        /* Responsive text scaling */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 4rem;
+            }
+            .game-button {
+                height: 180px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 3rem;
+            }
+            .game-button {
+                height: 160px;
+            }
         }
     </style>
 </head>
@@ -98,7 +147,6 @@
 
 <div class="games-container">
     <div class="games-grid">
-
         <a href="./YouAreBezos/youarebezos.html" class="game-button">
             <img src="../assets/icons/bezos.jpg" alt="You Are Bezos Icon">
             <span>You Are Bezos</span>
@@ -128,14 +176,12 @@
             <img src="../assets/icons/snowrider.jpg" alt="Snowrider Icon">
             <span>Snowrider</span>
         </a>
-
-        
     </div>
 </div>
 
-<div style="display: flex; justify-content: center; margin-top: 60px;">
-    <a href="../index.html" class="game-button" style="width: 180px; height: 80px; padding: 10px;">
-        <span style="font-size: 1.2rem; white-space: nowrap;">Return to Homepage</span>
+<div class="single-button">
+    <a href="../index.html" class="game-button">
+        <span>Return to Homepage</span>
     </a>
 </div>
 
