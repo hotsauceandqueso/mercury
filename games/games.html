@@ -1,191 +1,171 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mercury Games</title>
-
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-PTNKS7WP2E"></script>
-<script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-PTNKS7WP2E');
-</script>
-
-<link rel="stylesheet" href="../style.css">
-<link rel="stylesheet" href="../style/style.css">
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
-<style>
-body {
-    margin: 0;
-    overflow-x: hidden;
-    font-family: 'Roboto', sans-serif;
-    background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
-    color: #fff;
-}
-
-/* Header */
-header h1 {
-    font-size: 5rem;
-    text-align: center;
-    color: white;
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff;
-    margin: 40px 0 20px 0;
-    position: relative;
-    z-index: 10;
-}
-
-/* Games container */
-.games-container {
-    margin-top: 40px;
-    padding: 20px;
-    width: 100%;
-    position: relative;
-    z-index: 5;
-}
-
-/* Responsive grid */
-.games-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 20px; /* smaller space between buttons */
-    width: 100%;
-    max-width: 1200px;
-    margin: auto;
-    justify-items: center;
-}
-
-/* Game buttons */
-.game-button {
-    background: rgba(255, 255, 255, 0.12);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 15px;
-    text-align: center;
-    color: white;
-    text-decoration: none;
-    border: 1px solid rgba(255,255,255,0.25);
-    transition: 0.25s ease-in-out;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    max-width: 220px;
-    height: 180px;
-}
-
-.game-button img {
-    width: 90px;
-    height: 90px;
-    margin-bottom: 10px;
-    object-fit: cover;
-    border-radius: 12px;
-}
-
-.game-button span {
-    font-size: 1rem;
-    font-weight: 500;
-    text-align: center;
-}
-
-.game-button:hover {
-    transform: translateY(-5px);
-    background: rgba(255, 255, 255, 0.20);
-}
-
-/* Single centered button */
-.single-button {
-    display: flex;
-    justify-content: center;
-    margin-top: 50px;
-}
-
-.single-button .game-button {
-    width: 180px;
-    height: 70px;
-    padding: 10px;
-    font-size: 1.1rem;
-}
-
-/* Footer */
-footer {
-    text-align: center;
-    color: white;
-    margin: 40px 0;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    header h1 { font-size: 4rem; }
-    .game-button { max-width: 180px; height: 160px; }
-}
-
-@media (max-width: 480px) {
-    header h1 { font-size: 3rem; }
-    .game-button { max-width: 160px; height: 140px; padding: 10px; }
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mercury Games</title>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PTNKS7WP2E"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-PTNKS7WP2E');
+    </script>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../style/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+            color: #fff;
+        }
+        /* Header */
+        header h1 {
+            font-size: 5rem;
+            text-align: center;
+            color: white;
+            text-shadow: 0 0 10px #fff, 0 0 20px #fff;
+            margin: 40px 0 20px 0;
+            position: relative;
+            z-index: 10;
+        }
+        /* Games container */
+        .games-container {
+            margin-top: 40px;
+            padding: 20px;
+            width: 100%;
+            position: relative;
+            z-index: 5;
+        }
+        /* Responsive grid with more visible spacing */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px; /* Increased from 20px to 40px for clearer spacing between buttons */
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            justify-items: center;
+        }
+        /* Game buttons */
+        .game-button {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            text-decoration: none;
+            border: 1px solid rgba(255,255,255,0.25);
+            transition: transform 0.25s ease-in-out, background 0.25s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 240px;
+            height: 200px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        .game-button img {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 15px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+        .game-button span {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        .game-button:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.22);
+        }
+        /* Return button */
+        .single-button {
+            display: flex;
+            justify-content: center;
+            margin: 60px 0;
+        }
+        .single-button .game-button {
+            width: 220px;
+            height: 80px;
+            font-size: 1.2rem;
+        }
+        /* Footer */
+        footer {
+            text-align: center;
+            color: white;
+            margin: 40px 0 60px;
+        }
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            header h1 { font-size: 4rem; }
+            .games-grid { gap: 30px; }
+            .game-button { height: 180px; max-width: 200px; }
+        }
+        @media (max-width: 480px) {
+            header h1 { font-size: 3rem; }
+            .games-grid { gap: 25px; }
+            .game-button { height: 160px; padding: 15px; }
+            .game-button img { width: 80px; height: 80px; }
+        }
+    </style>
 </head>
 <body>
+    <canvas id="particle-canvas"></canvas>
 
-<canvas id="particle-canvas"></canvas>
+    <header>
+        <h1>Mercury Games</h1>
+    </header>
 
-<header>
-    <h1>Mercury Games</h1>
-</header>
+    <div class="games-container">
+        <div class="games-grid">
+            <a href="./YouAreBezos/youarebezos.html" class="game-button">
+                <img src="../assets/icons/bezos.jpg" alt="You Are Bezos Icon">
+                <span>You Are Bezos</span>
+            </a>
+            <a href="./slope.html/game" class="game-button">
+                <img src="../assets/icons/slope.png" alt="Slope Icon">
+                <span>Slope</span>
+            </a>
+            <a href="./Illegal-Journey/illegaljourney.html" class="game-button">
+                <img src="../assets/icons/stage.png" alt="Illegal Journey Icon">
+                <span>Illegal Journey</span>
+            </a>
+            <a href="./ddlc/" class="game-button">
+                <img src="../assets/icons/ddlc.jpg" alt="DDLC Icon">
+                <span>Doki Doki Literature Club!</span>
+            </a>
+            <a href="./snowrider/snowrider.html" class="game-button">
+                <img src="../assets/icons/snowrider.jpg" alt="Snowrider Icon">
+                <span>Snowrider</span>
+            </a>
+            <a href="./classof09/index.html" class="game-button">
+                <img src="../assets/icons/class.jpg" alt="Class of 09 Icon">
+                <span>Class of 09</span>
+            </a>
+        </div>
+    </div>
 
-<div class="games-container">
-    <div class="games-grid">
-        <a href="./YouAreBezos/youarebezos.html" class="game-button">
-            <img src="../assets/icons/bezos.jpg" alt="You Are Bezos Icon">
-            <span>You Are Bezos</span>
-        </a>
-
-        <a href="./slope.html/game" class="game-button">
-            <img src="../assets/icons/slope.png" alt="Slope Icon">
-            <span>Slope</span>
-        </a>
-
-        <a href="./Illegal-Journey/illegaljourney.html" class="game-button">
-            <img src="../assets/icons/stage.png" alt="Illegal Journey Icon">
-            <span>Illegal Journey</span>
-        </a>
-
-        <a href="./ddlc/" class="game-button">
-            <img src="../assets/icons/ddlc.jpg" alt="DDLC Icon">
-            <span>Doki Doki Literature Club!</span>
-        </a>
-
-        <a href="./snowrider/snowrider.html" class="game-button">
-            <img src="../assets/icons/snowrider.jpg" alt="Snowrider Icon">
-            <span>Snowrider</span>
-        </a>
-
-        <a href="./classof09/index.html" class="game-button">
-            <img src="../assets/icons/class.jpg" alt="Class of 09 Icon">
-            <span>Class of 09</span>
+    <div class="single-button">
+        <a href="../index.html" class="game-button">
+            <span>Return to Homepage</span>
         </a>
     </div>
-</div>
 
-<div class="single-button">
-    <a href="../index.html" class="game-button">
-        <span>Return to Homepage</span>
-    </a>
-</div>
+    <footer>
+        <p>© 2025 Mercury. All rights reserved.</p>
+    </footer>
 
-<footer>
-    <p>© 2025 Mercury. All rights reserved.</p>
-</footer>
-
-<script src="../particles.js"></script>
-<script src="../homepage.js"></script>
-<script src="../js/particles.js"></script>
-<script src="../js/homepage.js"></script>
-
+    <script src="../particles.js"></script>
+    <script src="../homepage.js"></script>
+    <script src="../js/particles.js"></script>
+    <script src="../js/homepage.js"></script>
 </body>
 </html>
