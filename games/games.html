@@ -1,198 +1,309 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Mercury Games</title>
 
+
+
     <!-- Google tag (gtag.js) -->
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-PTNKS7WP2E"></script>
+
     <script>
+
       window.dataLayer = window.dataLayer || [];
+
       function gtag(){dataLayer.push(arguments);}
+
       gtag('js', new Date());
+
       gtag('config', 'G-PTNKS7WP2E');
+
     </script>
 
+
+
     <link rel="stylesheet" href="../style.css">
+
     <link rel="stylesheet" href="../style/style.css">
+
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
+
+
     <style>
-        /* Basic page setup */
+
         body {
+
             margin: 0;
-            font-family: 'Roboto', sans-serif;
-            background: #111;
-            color: white;
+
             overflow-x: hidden;
+
+            font-family: 'Roboto', sans-serif;
+
         }
 
-        /* Header */
+
+
         header h1 {
+
             font-size: 6rem;
+
             text-align: center;
+
             color: white;
+
             text-shadow: 0 0 10px #fff, 0 0 20px #fff;
-            margin: 40px 0 20px 0;
+
+            margin-top: 40px;
+
+            margin-bottom: 20px;
+
             position: relative;
+
             z-index: 10;
+
         }
 
-        /* Games container */
+
+
         .games-container {
+
+            margin-top: 40px;
+
             padding: 20px;
+
             width: 100%;
-            max-width: 1600px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: center;
+
+            position: relative;
+
+            z-index: 5;
+
         }
 
-        /* Responsive grid for buttons */
+
+
         .games-grid {
+
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+
+            grid-template-columns: repeat(5, 1fr);
+
             gap: 25px;
-            justify-items: center;
+
             width: 100%;
+
+            max-width: 1600px;
+
+            margin: auto;
+
         }
 
-        /* Individual game button */
+
+
         .game-button {
+
             background: rgba(255, 255, 255, 0.12);
+
             backdrop-filter: blur(10px);
+
             border-radius: 20px;
+
             padding: 20px;
+
             text-align: center;
+
             color: white;
+
             text-decoration: none;
+
             border: 1px solid rgba(255,255,255,0.25);
+
             transition: 0.25s ease-in-out;
+
             display: flex;
+
             flex-direction: column;
+
             align-items: center;
+
             justify-content: center;
-            width: 100%;
-            max-width: 260px;
+
             height: 200px;
+
         }
+
+
 
         .game-button img {
+
             width: 100px;
+
             height: 100px;
+
             margin-bottom: 12px;
-            object-fit: cover;
-            border-radius: 12px;
+
         }
 
-        .game-button span {
-            font-size: 1.1rem;
-            font-weight: 500;
-        }
+
 
         .game-button:hover {
+
             transform: translateY(-5px);
+
             background: rgba(255, 255, 255, 0.20);
+
         }
 
-        /* Single centered button below grid */
-        .single-button {
-            display: flex;
-            justify-content: center;
-            margin-top: 60px;
-        }
 
-        .single-button .game-button {
-            width: 180px;
-            height: 80px;
-            padding: 10px;
-            font-size: 1.2rem;
-        }
 
-        /* Footer */
         footer {
+
             text-align: center;
+
             color: white;
+
             margin: 40px 0;
+
         }
 
-        /* Responsive text scaling */
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 4rem;
-            }
-            .game-button {
-                height: 180px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            header h1 {
-                font-size: 3rem;
-            }
-            .game-button {
-                height: 160px;
-            }
-        }
     </style>
+
 </head>
+
 <body>
+
+
 
 <canvas id="particle-canvas"></canvas>
 
+
+
 <header>
+
     <h1>Mercury Games</h1>
+
 </header>
 
+
+
 <div class="games-container">
+
     <div class="games-grid">
+
+
+
         <a href="./YouAreBezos/youarebezos.html" class="game-button">
+
             <img src="../assets/icons/bezos.jpg" alt="You Are Bezos Icon">
+
             <span>You Are Bezos</span>
+
         </a>
+
+
 
         <a href="./slope.html/game" class="game-button">
+
             <img src="../assets/icons/slope.png" alt="Slope Icon">
+
             <span>Slope</span>
+
         </a>
+
+
 
         <a href="./Illegal-Journey/illegaljourney.html" class="game-button">
+
             <img src="../assets/icons/stage.png" alt="Illegal Journey Icon">
+
             <span>Illegal Journey</span>
+
         </a>
+
+
 
         <a href="./ddlc/" class="game-button">
+
             <img src="../assets/icons/granny.jpg" alt="Granny Icon">
+
             <span>GRANNY</span>
+
         </a>
 
-        <a href="./snowrider/snowrider.html" class="game-button">
-            <img src="../assets/icons/snowrider.jpg" alt="Snowrider Icon">
-            <span>Snowrider</span>
-        </a>
+
 
         <a href="./snowrider/snowrider.html" class="game-button">
+
             <img src="../assets/icons/snowrider.jpg" alt="Snowrider Icon">
+
             <span>Snowrider</span>
+
         </a>
+
+
+
+
+        <a href="./snowrider/snowrider.html" class="game-button">
+
+
+            <img src="../assets/icons/snowrider.jpg" alt="Snowrider Icon">
+
+
+            <span>Snowrider</span>
+
+
+        </a>
+
+
+
+
+
+        
+
     </div>
+
 </div>
 
-<div class="single-button">
-    <a href="../index.html" class="game-button">
-        <span>Return to Homepage</span>
+
+
+<div style="display: flex; justify-content: center; margin-top: 60px;">
+
+    <a href="../index.html" class="game-button" style="width: 180px; height: 80px; padding: 10px;">
+
+        <span style="font-size: 1.2rem; white-space: nowrap;">Return to Homepage</span>
+
     </a>
+
 </div>
+
+
 
 <footer>
+
     <p>© 2025 Mercury. All rights reserved.</p>
+
 </footer>
 
+
+
 <script src="../particles.js"></script>
+
 <script src="../homepage.js"></script>
+
 <script src="../js/particles.js"></script>
+
 <script src="../js/homepage.js"></script>
 
+
+
 </body>
+
 </html>
