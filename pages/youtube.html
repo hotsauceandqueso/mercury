@@ -7,6 +7,29 @@
 <link rel="stylesheet" href="../style/youtube.css">
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
+/* Back button in top left */
+.back-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 12px 20px;
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    border: 1px solid rgba(255,255,255,0.25);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+.back-button:hover {
+    background: rgba(255, 255, 255, 0.22);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
 /* Header */
 header {
     text-align: center;
@@ -14,20 +37,17 @@ header {
     position: relative;
     z-index: 1;
 }
-
 header h1 {
     font-size: 3rem;
     color: #fff;
     margin: 0;
 }
-
 /* Centered search bar */
 .search-container {
     display: flex;
     justify-content: center;
     margin: 20px 0 40px 0;
 }
-
 .search-container input {
     flex: 1;
     max-width: 600px;
@@ -40,16 +60,13 @@ header h1 {
     color: #fff;
     transition: 0.3s;
 }
-
 .search-container input::placeholder {
     color: rgba(255,255,255,0.7);
 }
-
 .search-container input:focus {
     background-color: rgba(0, 123, 255, 0.2);
     border-color: #0056b3;
 }
-
 .search-container button {
     padding: 14px 25px;
     font-size: 16px;
@@ -61,12 +78,10 @@ header h1 {
     cursor: pointer;
     transition: background 0.3s, transform 0.2s;
 }
-
 .search-container button:hover {
     background: linear-gradient(45deg, #0056b3, #003f7f);
     transform: scale(1.05);
 }
-
 /* Player container - initially hidden */
 .player-container {
     width: 95%;
@@ -77,7 +92,6 @@ header h1 {
     height: 0;
     display: none; /* hidden initially */
 }
-
 .player-container iframe {
     position: absolute;
     top: 0;
@@ -86,7 +100,6 @@ header h1 {
     height: 100%;
     border: 0;
 }
-
 /* Video results grid - 5 per row */
 .results {
     display: grid;
@@ -96,7 +109,6 @@ header h1 {
     max-width: 1400px;
     margin: 30px auto 60px auto;
 }
-
 .video-card {
     background-color: rgba(0,0,0,0.3);
     border-radius: 10px;
@@ -107,39 +119,40 @@ header h1 {
     flex-direction: column;
     align-items: center;
 }
-
 .video-card img {
     width: 100%;
     display: block;
 }
-
 .video-card p {
     margin: 8px;
     font-size: 0.9rem;
     text-align: center;
     color: #fff;
 }
-
 .video-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0,0,0,0.5);
 }
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .back-button { padding: 10px 16px; font-size: 0.9rem; }
+}
+@media (max-width: 480px) {
+    .back-button { top: 15px; left: 15px; padding: 8px 14px; font-size: 0.85rem; }
+}
 </style>
 </head>
 <body>  
-
 <canvas id="particle-canvas"></canvas>
-
+<a href="../index.html" class="back-button">← Back</a>
 <header>
     <h1>Mercury YouTube Watcher</h1>
 </header>
-
 <main>
     <div class="search-container">
         <input id="search" type="text" placeholder="Search YouTube...">
         <button onclick="searchVideos()">Search</button>
     </div>
-
     <div class="player-container">
         <iframe id="player" 
             title="YouTube video player" 
@@ -147,14 +160,11 @@ header h1 {
             allowfullscreen>
         </iframe>
     </div>
-
     <div id="results" class="results"></div>
 </main>
-
 <footer>
     <p>Powered by YouTube Data API v3</p>
 </footer>
-
 <script src="../js/homepage.js"></script>
 <script src="../js/youtube.js"></script>
 </body>
