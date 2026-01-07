@@ -40,15 +40,24 @@
         /* Header */
         header {
             text-align: center;
-            padding: 80px 20px 40px 20px;
+            padding: 60px 20px 30px 20px;
             position: relative;
             z-index: 1;
         }
 
         header h1 {
-            font-size: 5rem;
-            margin: 0;
+            font-size: 6.5rem;
+            margin: 0 0 10px 0;
             text-shadow: 0 0 10px #fff, 0 0 20px #fff;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.3rem;
+            margin: 0;
+            opacity: 0.8;
+            font-weight: 400;
+            letter-spacing: 1px;
         }
 
         /* Main container */
@@ -60,13 +69,13 @@
             position: relative;
             z-index: 1;
             height: calc(100% - 200px);
-            padding-top: 20px;
+            padding-top: 10px;
         }
 
         /* Homepage button grid */
         .button-grid {
             display: flex;
-            gap: 15px;
+            gap: 20px;
             justify-content: center;
             align-items: center;
             width: 100%;
@@ -77,10 +86,10 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 25px;
+            padding: 35px;
             background-color: rgba(255,255,255,0.12);
             color: #fff;
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             text-decoration: none;
             border-radius: 20px;
             font-weight: 500;
@@ -89,8 +98,8 @@
             backdrop-filter: blur(5px);
             text-align: center;
             width: 100%;
-            max-width: 260px;
-            height: 180px;
+            max-width: 320px;
+            height: 220px;
         }
 
         .hub-button:hover, .game-button:hover {
@@ -123,28 +132,34 @@
         /* Responsive adjustments */
         @media (max-width: 768px) {
             header h1 {
-                font-size: 3.5rem;
+                font-size: 4.5rem;
+            }
+            header p {
+                font-size: 1.1rem;
             }
             .button-grid {
                 flex-direction: column;
+            }
+            .hub-button, .game-button {
+                max-width: 220px;
+                height: 180px;
+                padding: 25px;
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 3.5rem;
+            }
+            header p {
+                font-size: 1rem;
             }
             .hub-button, .game-button {
                 max-width: 180px;
                 height: 160px;
                 padding: 20px;
                 font-size: 1rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            header h1 {
-                font-size: 2.8rem;
-            }
-            .hub-button, .game-button {
-                max-width: 160px;
-                height: 140px;
-                padding: 15px;
-                font-size: 0.9rem;
             }
         }
     </style>
@@ -155,6 +170,7 @@
 
     <header>
         <h1>Mercury</h1>
+        <p>Your Digital Hub</p>
     </header>
 
     <main>
