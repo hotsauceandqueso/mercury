@@ -59,10 +59,20 @@
         #status.error {
             color: #f44336;
         }
+        .debug-info {
+            max-width: 800px;
+            margin: 10px auto;
+            padding: 10px;
+            background: #2a2a2a;
+            border-radius: 5px;
+            font-size: 12px;
+            font-family: monospace;
+        }
     </style>
 </head>
 <body>
     <div id="status">Initializing proxy...</div>
+    <div id="debug" class="debug-info"></div>
     <div id="search-container">
         <input type="text" id="url-input" placeholder="Enter URL (e.g., google.com)">
         <button id="go-button" onclick="loadProxy()">Go</button>
@@ -72,30 +82,51 @@
     <script src="/uv/uv.bundle.js"></script>
     <script src="/uv.config.js"></script>
     <script>
-        // Register the service worker FIRST when page loads
+        // Debug information
+        const debugEl = document.getElementById('debug');
+        debugEl.innerHTML = `
+            URL: ${window.location.href}<br>
+            Protocol: ${window.location.protocol}<br>
+            Secure Context: ${window.isSecureContext}<br>
+            Service Worker Support: ${'serviceWorker' in navigator}
+        `;
+
+        // Register the service worker
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', async () => {
-                try {
-                    const registration = await navigator.serviceWorker.register('/uv/uv.sw.js', {
-                        scope: '/service/'
-                    });
-                    console.log('Service Worker registered successfully:', registration.scope);
-                    document.getElementById('status').textContent = 'Proxy ready!';
-                    document.getElementById('status').className = 'ready';
-                    
-                    // Wait for service worker to be active
-                    if (registration.active) {
-                        console.log('Service Worker is active');
-                    } else {
-                        await navigator.serviceWorker.ready;
-                        console.log('Service Worker is now ready');
+            if (!window.isSecureContext) {
+                document.getElementById('status').textContent = 'Error: Page must be served over HTTPS';
+                document.getElementById('status').className = 'error';
+            } else {
+                window.addEventListener('load', async () => {
+                    try {
+                        console.log('Attempting to register service worker...');
+                        console.log('Service worker path: /uv/uv.sw.js');
+                        console.log('Scope: /service/');
+                        
+                        const registration = await navigator.serviceWorker.register('/uv/uv.sw.js', {
+                            scope: '/service/'
+                        });
+                        
+                        console.log('Service Worker registered successfully:', registration);
+                        document.getElementById('status').textContent = 'Proxy ready!';
+                        document.getElementById('status').className = 'ready';
+                        
+                        // Wait for service worker to be active
+                        if (registration.active) {
+                            console.log('Service Worker is active');
+                        } else {
+                            await navigator.serviceWorker.ready;
+                            console.log('Service Worker is now ready');
+                        }
+                    } catch (error) {
+                        console.error('Service Worker registration failed:', error);
+                        console.error('Error name:', error.name);
+                        console.error('Error message:', error.message);
+                        document.getElementById('status').textContent = 'Error: ' + error.message;
+                        document.getElementById('status').className = 'error';
                     }
-                } catch (error) {
-                    console.error('Service Worker registration failed:', error);
-                    document.getElementById('status').textContent = 'Proxy initialization failed. Check console for details.';
-                    document.getElementById('status').className = 'error';
-                }
-            });
+                });
+            }
         } else {
             document.getElementById('status').textContent = 'Service Workers not supported in this browser.';
             document.getElementById('status').className = 'error';
