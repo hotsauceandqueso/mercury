@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Mercury Games</title>
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-PTNKS7WP2E"></script>
@@ -18,11 +21,26 @@
     <style>
         body {
             margin: 0;
+            padding: 0;
             overflow-x: hidden;
+            overflow-y: auto;
             font-family: 'Roboto', sans-serif;
             background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
             color: #fff;
+            min-height: 100vh;
         }
+        
+        /* Particle canvas */
+        canvas#particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
         /* Back button in top left */
         .back-button {
             position: fixed;
@@ -46,34 +64,43 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
         }
+        
         /* Header */
+        header {
+            position: relative;
+            z-index: 10;
+        }
+        
         header h1 {
             font-size: 5rem;
             text-align: center;
             color: white;
             text-shadow: 0 0 10px #fff, 0 0 20px #fff;
             margin: 40px 0 20px 0;
-            position: relative;
-            z-index: 10;
         }
+        
         /* Games container */
         .games-container {
             margin-top: 40px;
-            padding: 20px;
+            padding: 20px 20px 60px 20px;
             width: 100%;
             position: relative;
             z-index: 5;
+            display: flex;
+            justify-content: center;
         }
-        /* Responsive grid with more visible spacing */
+        
+        /* Responsive grid with centered items */
         .games-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 55px;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 240px));
+            gap: 40px;
             width: 100%;
             max-width: 1200px;
-            margin: 0 auto;
+            justify-content: center;
             justify-items: center;
         }
+        
         /* Game buttons */
         .game-button {
             background: rgba(255, 255, 255, 0.12);
@@ -89,11 +116,11 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            width: 100%;
-            max-width: 240px;
+            width: 240px;
             height: 200px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
+        
         .game-button img {
             width: 100px;
             height: 100px;
@@ -101,31 +128,51 @@
             object-fit: cover;
             border-radius: 12px;
         }
+        
         .game-button span {
             font-size: 1.1rem;
             font-weight: 500;
         }
+        
         .game-button:hover {
             transform: translateY(-8px);
             background: rgba(255, 255, 255, 0.22);
         }
+        
         /* Footer */
         footer {
             text-align: center;
             color: white;
-            margin: 40px 0 60px;
+            padding: 40px 20px 60px 20px;
+            position: relative;
+            z-index: 10;
         }
+        
         /* Responsive adjustments */
         @media (max-width: 768px) {
             header h1 { font-size: 4rem; }
-            .games-grid { gap: 30px; }
-            .game-button { height: 180px; max-width: 200px; }
+            .games-grid { 
+                grid-template-columns: repeat(auto-fill, minmax(200px, 200px));
+                gap: 30px; 
+            }
+            .game-button { 
+                height: 180px; 
+                width: 200px;
+            }
             .back-button { padding: 10px 16px; font-size: 0.9rem; }
         }
+        
         @media (max-width: 480px) {
             header h1 { font-size: 3rem; }
-            .games-grid { gap: 25px; }
-            .game-button { height: 160px; padding: 15px; }
+            .games-grid { 
+                grid-template-columns: repeat(auto-fill, minmax(160px, 160px));
+                gap: 25px; 
+            }
+            .game-button { 
+                height: 160px; 
+                width: 160px;
+                padding: 15px; 
+            }
             .game-button img { width: 80px; height: 80px; }
             .back-button { top: 15px; left: 15px; padding: 8px 14px; font-size: 0.85rem; }
         }
@@ -171,7 +218,7 @@
                 <span>Actual Granny</span>
             </a>
             <a href="./drivemad/drivemad.html" class="game-button">
-                <img src="../assets/icons/drivemad.jpg" alt="Granny Icon">
+                <img src="../assets/icons/drivemad.jpg" alt="Drive Mad Icon">
                 <span>Drive Mad</span>
             </a>
         </div>
