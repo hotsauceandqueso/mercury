@@ -70,7 +70,7 @@
     <iframe id="proxy-frame"></iframe>
 
     <script src="/uv/uv.bundle.js"></script>
-    <script src="/uv/uv.config.js"></script>
+    <script src="/uv.config.js"></script>
     <script>
         // Register the service worker FIRST when page loads
         if ('serviceWorker' in navigator) {
@@ -123,28 +123,3 @@
     </script>
 </body>
 </html>
-```
-
-## What I Added:
-
-1. **Service Worker Registration** - Registers when the page loads
-2. **Status Indicator** - Shows "Proxy ready!" when the service worker is active
-3. **Error Handling** - Shows clear error messages if something goes wrong
-4. **Console Logging** - Helps you debug if there are issues
-
-## What You'll See:
-
-- **Green "Proxy ready!"** - Everything is working
-- **Red error message** - Something went wrong (check browser console with F12)
-
-## Next Steps:
-
-Make sure you have these files in place:
-```
-your-website/
-├── proxy.html              (this file)
-└── uv/
-    ├── uv.bundle.js       (from npm install)
-    ├── uv.config.js       (you need to create this)
-    ├── uv.handler.js      (from npm install)
-    └── uv.sw.js           (from npm install - the service worker file)
