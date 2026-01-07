@@ -45,9 +45,24 @@
             margin-top: 20px;
             border-radius: 5px;
         }
+        #status {
+            max-width: 800px;
+            margin: 10px auto;
+            padding: 10px;
+            text-align: center;
+            font-size: 14px;
+            color: #888;
+        }
+        #status.ready {
+            color: #4CAF50;
+        }
+        #status.error {
+            color: #f44336;
+        }
     </style>
 </head>
 <body>
+    <div id="status">Initializing proxy...</div>
     <div id="search-container">
         <input type="text" id="url-input" placeholder="Enter URL (e.g., google.com)">
         <button id="go-button" onclick="loadProxy()">Go</button>
@@ -57,6 +72,35 @@
     <script src="/uv/uv.bundle.js"></script>
     <script src="/uv/uv.config.js"></script>
     <script>
+        // Register the service worker FIRST when page loads
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', async () => {
+                try {
+                    const registration = await navigator.serviceWorker.register('/uv/uv.sw.js', {
+                        scope: '/service/'
+                    });
+                    console.log('Service Worker registered successfully:', registration.scope);
+                    document.getElementById('status').textContent = 'Proxy ready!';
+                    document.getElementById('status').className = 'ready';
+                    
+                    // Wait for service worker to be active
+                    if (registration.active) {
+                        console.log('Service Worker is active');
+                    } else {
+                        await navigator.serviceWorker.ready;
+                        console.log('Service Worker is now ready');
+                    }
+                } catch (error) {
+                    console.error('Service Worker registration failed:', error);
+                    document.getElementById('status').textContent = 'Proxy initialization failed. Check console for details.';
+                    document.getElementById('status').className = 'error';
+                }
+            });
+        } else {
+            document.getElementById('status').textContent = 'Service Workers not supported in this browser.';
+            document.getElementById('status').className = 'error';
+        }
+
         function loadProxy() {
             let url = document.getElementById('url-input').value.trim();
             
@@ -79,3 +123,28 @@
     </script>
 </body>
 </html>
+```
+
+## What I Added:
+
+1. **Service Worker Registration** - Registers when the page loads
+2. **Status Indicator** - Shows "Proxy ready!" when the service worker is active
+3. **Error Handling** - Shows clear error messages if something goes wrong
+4. **Console Logging** - Helps you debug if there are issues
+
+## What You'll See:
+
+- **Green "Proxy ready!"** - Everything is working
+- **Red error message** - Something went wrong (check browser console with F12)
+
+## Next Steps:
+
+Make sure you have these files in place:
+```
+your-website/
+├── proxy.html              (this file)
+└── uv/
+    ├── uv.bundle.js       (from npm install)
+    ├── uv.config.js       (you need to create this)
+    ├── uv.handler.js      (from npm install)
+    └── uv.sw.js           (from npm install - the service worker file)
