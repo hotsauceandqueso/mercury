@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Mercury</title>
     <link rel="icon" href="favicon.ico">
     <!-- Google Analytics -->
@@ -108,27 +111,6 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.5);
         }
 
-        /* Floating info bar */
-        #info-bar {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            font-size: 14px;
-            color: white;
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 10px 30px;
-            z-index: 9999;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
-            min-width: 250px;
-            max-width: 400px;
-        }
-
         /* Responsive adjustments */
         @media (max-width: 768px) {
             header h1 {
@@ -179,12 +161,6 @@
             <a href="games/games.html" class="hub-button">Games</a>
         </div>
     </main>
-
-    <!-- Floating info bar -->
-    <div id="info-bar">
-        <span id="battery"></span>
-        <span id="time"></span>
-    </div>
 
     <!-- Scripts -->
     <script>
@@ -242,29 +218,6 @@
             requestAnimationFrame(animate);
         }
         animate();
-
-        // Info bar JS
-        async function updateBattery() {
-            if (!navigator.getBattery) {
-                document.getElementById("battery").textContent = "Battery: N/A";
-                return;
-            }
-            const battery = await navigator.getBattery();
-            function refreshBattery() {
-                document.getElementById("battery").textContent = `Battery: ${Math.round(battery.level * 100)}%`;
-            }
-            battery.addEventListener("levelchange", refreshBattery);
-            refreshBattery();
-        }
-        updateBattery();
-
-        function updateTime() {
-            const time = new Date();
-            const formatted = time.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
-            document.getElementById("time").textContent = `Time: ${formatted}`;
-        }
-        setInterval(updateTime, 1000);
-        updateTime();
     </script>
 </body>
 </html>
