@@ -1,3 +1,4 @@
+cat > /var/www/mercury/uv.config.js << 'EOF'
 self.__uv$config = {
     prefix: '/service/',
     bare: 'https://tomp.app/bare/',
@@ -8,3 +9,4 @@ self.__uv$config = {
     config: '/uv.config.js',
     sw: '/uv/uv.sw.js',
 };
+EOF
