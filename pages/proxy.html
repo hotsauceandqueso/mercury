@@ -2,25 +2,80 @@
 <html>
 <head>
     <title>Mercury Proxy</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #1a1a1a;
+            color: white;
+        }
+        #search-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        #url-input {
+            width: 70%;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #333;
+            border-radius: 5px 0 0 5px;
+            background: #2a2a2a;
+            color: white;
+        }
+        #go-button {
+            width: 28%;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #333;
+            border-left: none;
+            border-radius: 0 5px 5px 0;
+            background: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        #go-button:hover {
+            background: #45a049;
+        }
+        #proxy-frame {
+            width: 100%;
+            height: calc(100vh - 120px);
+            border: none;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
-    <div id="proxy-container">
-        <input type="text" id="url-input" placeholder="Enter URL...">
-        <button onclick="loadProxy()">Go</button>
-        <iframe id="proxy-frame"></iframe>
+    <div id="search-container">
+        <input type="text" id="url-input" placeholder="Enter URL (e.g., google.com)">
+        <button id="go-button" onclick="loadProxy()">Go</button>
     </div>
+    <iframe id="proxy-frame"></iframe>
 
     <script src="/uv/uv.bundle.js"></script>
     <script src="/uv/uv.config.js"></script>
     <script>
-        async function loadProxy() {
-            const url = document.getElementById('url-input').value;
-            const frame = document.getElementById('proxy-frame');
+        function loadProxy() {
+            let url = document.getElementById('url-input').value.trim();
             
-            // Encode URL using Ultraviolet
+            // Add https:// if no protocol specified
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://' + url;
+            }
+            
+            const frame = document.getElementById('proxy-frame');
             const encodedUrl = __uv$config.encodeUrl(url);
             frame.src = __uv$config.prefix + encodedUrl;
         }
+        
+        // Allow Enter key to submit
+        document.getElementById('url-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                loadProxy();
+            }
+        });
     </script>
 </body>
 </html>
