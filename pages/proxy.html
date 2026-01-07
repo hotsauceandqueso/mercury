@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mercury Proxy</title>
+</head>
+<body>
+    <div id="proxy-container">
+        <input type="text" id="url-input" placeholder="Enter URL...">
+        <button onclick="loadProxy()">Go</button>
+        <iframe id="proxy-frame"></iframe>
+    </div>
+
+    <script src="/uv/uv.bundle.js"></script>
+    <script src="/uv/uv.config.js"></script>
+    <script>
+        async function loadProxy() {
+            const url = document.getElementById('url-input').value;
+            const frame = document.getElementById('proxy-frame');
+            
+            // Encode URL using Ultraviolet
+            const encodedUrl = __uv$config.encodeUrl(url);
+            frame.src = __uv$config.prefix + encodedUrl;
+        }
+    </script>
+</body>
+</html>
