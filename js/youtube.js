@@ -1,5 +1,5 @@
 const API_KEY = 'AIzaSyBMOMNiDI-ASbl61gv-fecfxETRTjOznxo';
-const MAX_RESULTS = 30; // show 30 videos
+const MAX_RESULTS = 50; // show 30 videos
 
 async function searchVideos() {
     const query = document.getElementById('search').value.trim();
