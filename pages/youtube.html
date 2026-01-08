@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mercury YouTube Watcher</title>
-<link rel="stylesheet" href="../style/youtube.css">
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 body {
@@ -113,7 +112,7 @@ main {
     transform: scale(1.05);
 }
 
-/* Player container - initially hidden */
+/* Player container */
 .player-container {
     width: 95%;
     max-width: 1400px;
@@ -121,7 +120,7 @@ main {
     position: relative;
     padding-bottom: 56.25%;
     height: 0;
-    display: none; /* hidden initially */
+    display: none; 
 }
 .player-container iframe {
     position: absolute;
@@ -214,65 +213,111 @@ footer {
     <p>Powered by YouTube Data API v3</p>
 </footer>
 
-<!-- Particle System Script (copied from index.html) -->
 <script>
-    // Particles JS
-    const canvas = document.getElementById('particle-canvas');
-    const ctx = canvas.getContext('2d');
-    let particlesArray = [];
-    const maxParticles = 100;
+// Particles JS
+const canvas = document.getElementById('particle-canvas');
+const ctx = canvas.getContext('2d');
+let particlesArray = [];
+const maxParticles = 100;
 
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
+function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
 
-    class Particle {
-        constructor() {
-            this.x = Math.random() * canvas.width;
-            this.y = Math.random() * canvas.height;
-            this.size = Math.random() * 2 + 1;
-            this.speedX = (Math.random() - 0.5) * 1;
-            this.speedY = (Math.random() - 0.5) * 1;
-        }
-        update() {
-            this.x += this.speedX;
-            this.y += this.speedY;
-            if (this.x < 0) this.x = canvas.width;
-            if (this.x > canvas.width) this.x = 0;
-            if (this.y < 0) this.y = canvas.height;
-            if (this.y > canvas.height) this.y = 0;
-        }
-        draw() {
-            ctx.fillStyle = 'white';
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fill();
-        }
+class Particle {
+    constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2 + 1;
+        this.speedX = (Math.random() - 0.5) * 1;
+        this.speedY = (Math.random() - 0.5) * 1;
     }
+    update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if(this.x<0) this.x=canvas.width;
+        if(this.x>canvas.width) this.x=0;
+        if(this.y<0) this.y=canvas.height;
+        if(this.y>canvas.height) this.y=0;
+    }
+    draw() {
+        ctx.fillStyle='white';
+        ctx.beginPath();
+        ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+        ctx.fill();
+    }
+}
 
-    function initParticles() {
-        particlesArray = [];
-        for (let i = 0; i < maxParticles; i++) {
-            particlesArray.push(new Particle());
-        }
-    }
-    initParticles();
+function initParticles() {
+    particlesArray = [];
+    for(let i=0;i<maxParticles;i++){particlesArray.push(new Particle());}
+}
+initParticles();
 
-    function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        particlesArray.forEach(p => {
-            p.update();
-            p.draw();
-        });
-        requestAnimationFrame(animate);
-    }
-    animate();
+function animate() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particlesArray.forEach(p=>{p.update();p.draw();});
+    requestAnimationFrame(animate);
+}
+animate();
 </script>
 
-<!-- YouTube functionality - keep this external as it contains the actual YouTube logic -->
-<script src="../js/youtube.js"></script>
+<script>
+// YouTube JS with 1-minute rate limit
+const API_KEY = 'AIzaSyBMOMNiDI-ASbl61gv-fecfxETRTjOznxo';
+let lastSearchTime = 0; // timestamp of last search
+
+async function searchVideos() {
+    const now = Date.now();
+    if (now - lastSearchTime < 60_000) { // 60 seconds = 1 minute
+        alert("Please wait 1 minute before searching again to save your quota.");
+        return;
+    }
+    lastSearchTime = now;
+
+    const query = document.getElementById('search').value.trim();
+    if (!query) return;
+
+    const resultsDiv = document.getElementById('results');
+    resultsDiv.innerHTML = '<p style="text-align:center; grid-column: span 5;">Searching...</p>';
+
+    try {
+        const response = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=20&q=${encodeURIComponent(query)}&key=${API_KEY}`);
+        const data = await response.json();
+        resultsDiv.innerHTML = '';
+        if(data.items && data.items.length>0){
+            data.items.forEach(item=>{
+                const videoId=item.id.videoId;
+                const title=item.snippet.title;
+                const thumbnail=item.snippet.thumbnails.medium.url;
+
+                const card=document.createElement('div');
+                card.className='video-card';
+                card.innerHTML=`<img src="${thumbnail}" alt="${title}"><p>${title}</p>`;
+                card.onclick=()=>playVideo(videoId);
+                resultsDiv.appendChild(card);
+            });
+        } else {
+            resultsDiv.innerHTML='<p style="text-align:center; grid-column: span 5;">No results found.</p>';
+        }
+    } catch(err) {
+        resultsDiv.innerHTML='<p style="text-align:center; grid-column: span 5;">Error fetching videos. Try again later.</p>';
+        console.error(err);
+    }
+}
+
+function playVideo(videoId){
+    const playerContainer=document.querySelector('.player-container');
+    const player=document.getElementById('player');
+    player.src=`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1`;
+    playerContainer.style.display='block';
+    window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// Enter key triggers search
+document.getElementById('search').addEventListener('keydown', e=>{
+    if(e.key==='Enter') searchVideos();
+});
+</script>
 </body>
 </html>
