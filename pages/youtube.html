@@ -30,6 +30,30 @@ body {
     pointer-events: none;
 }
 
+/* Back button */
+.back-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 12px 20px;
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    border: 1px solid rgba(255,255,255,0.25);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+.back-button:hover {
+    background: rgba(255, 255, 255, 0.22);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
 /* Header */
 header {
     text-align: center;
@@ -62,15 +86,8 @@ header h1 {
     color: #fff;
     transition: 0.3s;
 }
-
-.search-container input::placeholder {
-    color: rgba(255,255,255,0.7);
-}
-
-.search-container input:focus {
-    background-color: rgba(0, 98, 204, 0.3);
-    border-color: #004a99;
-}
+.search-container input::placeholder { color: rgba(255,255,255,0.7); }
+.search-container input:focus { background-color: rgba(0, 98, 204, 0.3); border-color: #004a99; }
 
 .search-container select {
     padding: 14px 12px;
@@ -83,10 +100,7 @@ header h1 {
     color: white;
     cursor: pointer;
 }
-
-.search-container select option {
-    color: black;
-}
+.search-container select option { color: black; }
 
 .search-container button {
     padding: 14px 25px;
@@ -99,7 +113,6 @@ header h1 {
     cursor: pointer;
     transition: background 0.3s, transform 0.2s;
 }
-
 .search-container button:hover {
     background: linear-gradient(45deg, #004a99, #003366);
     transform: scale(1.05);
@@ -112,12 +125,7 @@ header h1 {
     margin-bottom: 50px;
     display: none;
 }
-
-.player-container iframe {
-    width: 100%;
-    height: 500px;
-    border: 0;
-}
+.player-container iframe { width: 100%; height: 500px; border: 0; }
 
 /* Results styling */
 .results {
@@ -125,9 +133,13 @@ header h1 {
     max-width: 900px;
     margin-bottom: 50px;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     gap: 20px;
 }
+
+/* Default for multiple videos: 5 per row */
+.results.multiple { grid-template-columns: repeat(5, 1fr); }
+/* Single video: center */
+.results.single { grid-template-columns: 1fr; justify-items: center; }
 
 .video-card {
     background-color: rgba(0,0,0,0.3);
@@ -139,44 +151,22 @@ header h1 {
     flex-direction: column;
     align-items: center;
 }
-
-.video-card img {
-    width: 100%;
-    display: block;
-}
-
-.video-card p {
-    margin: 8px;
-    font-size: 0.9rem;
-    text-align: center;
-    color: #fff;
-}
-
-.video-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-}
+.video-card img { width: 100%; display: block; }
+.video-card p { margin: 8px; font-size: 0.9rem; text-align: center; color: #fff; }
+.video-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
 
 /* Footer */
-footer {
-    margin-bottom: 30px;
-    font-size: 0.9rem;
-    text-align: center;
-    color: rgba(255,255,255,0.7);
-}
+footer { margin-bottom: 30px; font-size: 0.9rem; text-align: center; color: rgba(255,255,255,0.7); }
 
 /* Responsive */
-@media (max-width: 768px) {
-    header h1 { font-size: 4rem; }
-}
-@media (max-width: 480px) {
-    header h1 { font-size: 3rem; }
-}
+@media (max-width: 768px) { header h1 { font-size: 4rem; } }
+@media (max-width: 480px) { header h1 { font-size: 3rem; } }
 </style>
 </head>
 <body>
 <canvas id="particle-canvas"></canvas>
 <a href="../index.html" class="back-button">← Back</a>
+
 <header>
     <h1>Mercury YouTube Watcher</h1>
 </header>
@@ -212,10 +202,7 @@ const ctx = canvas.getContext('2d');
 let particlesArray = [];
 const maxParticles = 100;
 
-function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}
+function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 
@@ -224,91 +211,81 @@ class Particle {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
         this.size = Math.random() * 2 + 1;
-        this.speedX = (Math.random() - 0.5) * 1;
-        this.speedY = (Math.random() - 0.5) * 1;
+        this.speedX = (Math.random()-0.5) * 1;
+        this.speedY = (Math.random()-0.5) * 1;
     }
     update() {
         this.x += this.speedX;
         this.y += this.speedY;
-        if (this.x < 0) this.x = canvas.width;
-        if (this.x > canvas.width) this.x = 0;
-        if (this.y < 0) this.y = canvas.height;
-        if (this.y > canvas.height) this.y = 0;
+        if(this.x<0) this.x=canvas.width;
+        if(this.x>canvas.width) this.x=0;
+        if(this.y<0) this.y=canvas.height;
+        if(this.y>canvas.height) this.y=0;
     }
     draw() {
-        ctx.fillStyle = 'white';
+        ctx.fillStyle='white';
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
+        ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
         ctx.fill();
     }
 }
-
-function initParticles() {
-    particlesArray = [];
-    for(let i=0;i<maxParticles;i++){
-        particlesArray.push(new Particle());
-    }
-}
+function initParticles() { particlesArray=[]; for(let i=0;i<maxParticles;i++){ particlesArray.push(new Particle()); } }
 initParticles();
-
-function animate() {
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    particlesArray.forEach(p=>{p.update();p.draw();});
-    requestAnimationFrame(animate);
-}
+function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); particlesArray.forEach(p=>{p.update();p.draw();}); requestAnimationFrame(animate); }
 animate();
 </script>
 
 <script>
-// YouTube JS
-const API_KEY = 'AIzaSyBMOMNiDI-ASbl61gv-fecfxETRTjOznxo';
+// YouTube
+const API_KEY='AIzaSyBMOMNiDI-ASbl61gv-fecfxETRTjOznxo';
 
-async function searchVideos() {
-    const query = document.getElementById('search').value.trim();
+async function searchVideos(){
+    const query=document.getElementById('search').value.trim();
     if(!query) return;
 
-    const maxResults = document.getElementById('resultCount').value;
-    const resultsDiv = document.getElementById('results');
-    resultsDiv.innerHTML = '<p style="text-align:center;">Searching...</p>';
+    const maxResults=document.getElementById('resultCount').value;
+    const resultsDiv=document.getElementById('results');
+    resultsDiv.innerHTML='<p style="text-align:center;">Searching...</p>';
 
-    try {
-        const response = await fetch(
-            `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=${maxResults}&q=${encodeURIComponent(query)}&key=${API_KEY}`
-        );
-        const data = await response.json();
+    try{
+        const response=await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=${maxResults}&q=${encodeURIComponent(query)}&key=${API_KEY}`);
+        const data=await response.json();
 
-        resultsDiv.innerHTML = '';
+        resultsDiv.innerHTML='';
         if(data.items && data.items.length>0){
-            data.items.forEach(item=>{
-                const videoId = item.id.videoId;
-                const title = item.snippet.title;
-                const thumbnail = item.snippet.thumbnails.medium.url;
+            // Set grid class
+            resultsDiv.className = 'results ' + (data.items.length>1 ? 'multiple' : 'single');
 
-                const card = document.createElement('div');
-                card.className = 'video-card';
-                card.innerHTML = `<img src="${thumbnail}" alt="${title}"><p>${title}</p>`;
-                card.onclick = ()=>playVideo(videoId);
+            data.items.forEach(item=>{
+                const videoId=item.id.videoId;
+                const title=item.snippet.title;
+                const thumbnail=item.snippet.thumbnails.medium.url;
+
+                const card=document.createElement('div');
+                card.className='video-card';
+                card.innerHTML=`<img src="${thumbnail}" alt="${title}"><p>${title}</p>`;
+                card.onclick=()=>playVideo(videoId);
                 resultsDiv.appendChild(card);
             });
         } else {
-            resultsDiv.innerHTML = '<p style="text-align:center;">No results found.</p>';
+            resultsDiv.innerHTML='<p style="text-align:center;">No results found.</p>';
         }
-    } catch(err){
-        resultsDiv.innerHTML = '<p style="text-align:center;">Error fetching videos.</p>';
+    }catch(err){
+        resultsDiv.innerHTML='<p style="text-align:center;">Error fetching videos.</p>';
         console.error(err);
     }
 }
 
 function playVideo(videoId){
-    const player = document.getElementById('player');
-    const playerContainer = document.querySelector('.player-container');
-    player.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1`;
-    playerContainer.style.display = 'block';
+    const player=document.getElementById('player');
+    const playerContainer=document.querySelector('.player-container');
+    player.src=`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1`;
+    playerContainer.style.display='block';
     window.scrollTo({top:0,behavior:'smooth'});
 }
 
 // Trigger search on Enter
-document.getElementById('search').addEventListener('keydown', e=>{
+document.getElementById('search').addEventListener('keydown',e=>{
     if(e.key==='Enter') searchVideos();
 });
 </script>
