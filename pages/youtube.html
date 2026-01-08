@@ -37,7 +37,6 @@ header {
     position: relative;
     z-index: 10;
 }
-
 header h1 {
     font-size: 5rem;
     color: white;
@@ -53,7 +52,7 @@ header h1 {
 
 .search-container input {
     flex: 1;
-    max-width: 600px;
+    max-width: 400px;
     padding: 14px 20px;
     font-size: 16px;
     border-radius: 30px 0 0 30px;
@@ -73,6 +72,22 @@ header h1 {
     border-color: #004a99;
 }
 
+.search-container select {
+    padding: 14px 12px;
+    font-size: 14px;
+    border-top: 2px solid #0062cc;
+    border-bottom: 2px solid #0062cc;
+    border-left: none;
+    border-right: none;
+    background-color: rgba(0, 98, 204, 0.2);
+    color: white;
+    cursor: pointer;
+}
+
+.search-container select option {
+    color: black;
+}
+
 .search-container button {
     padding: 14px 25px;
     font-size: 16px;
@@ -90,30 +105,12 @@ header h1 {
     transform: scale(1.05);
 }
 
-/* Result count selector */
-.search-container select {
-    padding: 14px 16px;
-    font-size: 15px;
-    border-top: 2px solid #0062cc;
-    border-bottom: 2px solid #0062cc;
-    border-left: none;
-    border-right: none;
-    background-color: rgba(0, 98, 204, 0.2);
-    color: white;
-    outline: none;
-    cursor: pointer;
-}
-
-.search-container select option {
-    color: black;
-}
-
 /* Player container */
 .player-container {
     width: 90%;
     max-width: 900px;
     margin-bottom: 50px;
-    display: none; /* hidden initially */
+    display: none;
 }
 
 .player-container iframe {
@@ -142,16 +139,19 @@ header h1 {
     flex-direction: column;
     align-items: center;
 }
+
 .video-card img {
     width: 100%;
     display: block;
 }
+
 .video-card p {
     margin: 8px;
     font-size: 0.9rem;
     text-align: center;
     color: #fff;
 }
+
 .video-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 20px rgba(0,0,0,0.5);
@@ -165,16 +165,12 @@ footer {
     color: rgba(255,255,255,0.7);
 }
 
-/* Responsive title sizes */
+/* Responsive */
 @media (max-width: 768px) {
-    header h1 {
-        font-size: 4rem;
-    }
+    header h1 { font-size: 4rem; }
 }
 @media (max-width: 480px) {
-    header h1 {
-        font-size: 3rem;
-    }
+    header h1 { font-size: 3rem; }
 }
 </style>
 </head>
@@ -189,11 +185,11 @@ footer {
     <div class="search-container">
         <input id="search" type="text" placeholder="Search YouTube...">
         <select id="resultCount">
-            <option value="1">1</option>
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="20" selected>20</option>
-            <option value="50">50</option>
+            <option value="1">1 video</option>
+            <option value="5" selected>5 videos</option>
+            <option value="10">10 videos</option>
+            <option value="20">20 videos</option>
+            <option value="50">50 videos</option>
         </select>
         <button onclick="searchVideos()">Search</button>
     </div>
@@ -210,7 +206,7 @@ footer {
 </footer>
 
 <script>
-// Particles JS
+// Particles
 const canvas = document.getElementById('particle-canvas');
 const ctx = canvas.getContext('2d');
 let particlesArray = [];
@@ -242,25 +238,22 @@ class Particle {
     draw() {
         ctx.fillStyle = 'white';
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
         ctx.fill();
     }
 }
 
 function initParticles() {
     particlesArray = [];
-    for (let i = 0; i < maxParticles; i++) {
+    for(let i=0;i<maxParticles;i++){
         particlesArray.push(new Particle());
     }
 }
 initParticles();
 
 function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particlesArray.forEach(p => {
-        p.update();
-        p.draw();
-    });
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particlesArray.forEach(p=>{p.update();p.draw();});
     requestAnimationFrame(animate);
 }
 animate();
@@ -272,7 +265,7 @@ const API_KEY = 'AIzaSyBMOMNiDI-ASbl61gv-fecfxETRTjOznxo';
 
 async function searchVideos() {
     const query = document.getElementById('search').value.trim();
-    if (!query) return;
+    if(!query) return;
 
     const maxResults = document.getElementById('resultCount').value;
     const resultsDiv = document.getElementById('results');
@@ -285,43 +278,38 @@ async function searchVideos() {
         const data = await response.json();
 
         resultsDiv.innerHTML = '';
-        if (data.items && data.items.length > 0) {
-            data.items.forEach(item => {
+        if(data.items && data.items.length>0){
+            data.items.forEach(item=>{
                 const videoId = item.id.videoId;
                 const title = item.snippet.title;
                 const thumbnail = item.snippet.thumbnails.medium.url;
 
                 const card = document.createElement('div');
                 card.className = 'video-card';
-                card.innerHTML = `
-                    <img src="${thumbnail}" alt="${title}">
-                    <p>${title}</p>
-                `;
-                card.onclick = () => playVideo(videoId);
+                card.innerHTML = `<img src="${thumbnail}" alt="${title}"><p>${title}</p>`;
+                card.onclick = ()=>playVideo(videoId);
                 resultsDiv.appendChild(card);
             });
         } else {
             resultsDiv.innerHTML = '<p style="text-align:center;">No results found.</p>';
         }
-    } catch (err) {
+    } catch(err){
         resultsDiv.innerHTML = '<p style="text-align:center;">Error fetching videos.</p>';
         console.error(err);
     }
 }
 
-function playVideo(videoId) {
+function playVideo(videoId){
     const player = document.getElementById('player');
     const playerContainer = document.querySelector('.player-container');
-
     player.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1`;
     playerContainer.style.display = 'block';
-
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({top:0,behavior:'smooth'});
 }
 
-// Enter key triggers search
-document.getElementById('search').addEventListener('keydown', e => {
-    if (e.key === 'Enter') searchVideos();
+// Trigger search on Enter
+document.getElementById('search').addEventListener('keydown', e=>{
+    if(e.key==='Enter') searchVideos();
 });
 </script>
 </body>
