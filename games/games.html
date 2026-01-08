@@ -15,8 +15,6 @@
         gtag('js', new Date());
         gtag('config', 'G-PTNKS7WP2E');
     </script>
-    <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="../style/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -243,14 +241,13 @@
                 <span>Drive Mad</span>
             </a>
             <a href="./basket/basket.html" class="game-button">
-                <img src="../assets/icons/basket.jpg" alt="Drive Mad Icon">
+                <img src="../assets/icons/basket.jpg" alt="Basket Random Icon">
                 <span>Basket Random</span>
             </a>
             <a href="./sniper/sniper.html" class="game-button">
-                <img src="../assets/icons/sniper.jpg" alt="Drive Mad Icon">
+                <img src="../assets/icons/sniper.jpg" alt="Rooftop Snipers Icon">
                 <span>Rooftop Snipers</span>
             </a>
-
         </div>
     </div>
 
@@ -258,9 +255,62 @@
         <p>© 2025 Mercury. All rights reserved, Fuentes 2028.</p>
     </footer>
 
-    <script src="../particles.js"></script>
-    <script src="../homepage.js"></script>
-    <script src="../js/particles.js"></script>
-    <script src="../js/homepage.js"></script>
+    <!-- Particle System Script (copied from index.html) -->
+    <script>
+        // Particles JS
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particlesArray = [];
+        const maxParticles = 100;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = (Math.random() - 0.5) * 1;
+                this.speedY = (Math.random() - 0.5) * 1;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.y < 0) this.y = canvas.height;
+                if (this.y > canvas.height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = 'white';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particlesArray = [];
+            for (let i = 0; i < maxParticles; i++) {
+                particlesArray.push(new Particle());
+            }
+        }
+        initParticles();
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particlesArray.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
 </body>
 </html>
