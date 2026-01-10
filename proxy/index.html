@@ -1,293 +1,306 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
-  <title>Mercury Proxy</title>
-  <link rel="icon" href="favicon.ico">
-  
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>Mercury Proxy</title>
+<link rel="icon" href="favicon.ico">
 
-  <!-- UV Scripts -->
-  <script src="/uv/uv.bundle.js"></script>
-  <script src="/uv/uv.config.js"></script>
-  <script src="/baremux/index.js"></script>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
-  <script>
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
+<!-- UV Scripts -->
+<script src="/uv/uv.bundle.js"></script>
+<script src="/uv/uv.config.js"></script>
+<script src="/baremux/index.js"></script>
+
+<script>
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
         navigator.serviceWorker.register("/uv/sw.js");
-      });
-    }
-  </script>
+    });
+}
+</script>
 
-  <style>
-    /* Reset & fonts */
-    body, html {
-      margin: 0;
-      padding: 0;
-      font-family: 'Roboto', sans-serif;
-      height: 100%;
-      overflow: hidden;
-      background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
-      color: #fff;
-      position: relative;
-    }
+<style>
+/* Reset & fonts */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    height: 100%;
+    overflow: hidden;
+    background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+    color: #fff;
+    position: relative;
+}
 
-    /* Particle canvas */
-    canvas#particle-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-    }
+/* Particle canvas */
+canvas#particle-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
 
-    /* Top right logo */
-    .top-right-logo {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 2;
-      width: 60px;
-      height: 60px;
-    }
+/* Back button in top left */
+.back-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 10;
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 12px 20px;
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    border: 1px solid rgba(255,255,255,0.25);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+.back-button:hover {
+    background: rgba(255,255,255,0.22);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+}
 
-    .top-right-logo img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
+/* Header */
+header {
+    text-align: center;
+    padding: 40px 20px 20px 20px;
+    position: relative;
+    z-index: 1;
+}
 
-    /* Header */
-    header {
-      text-align: center;
-      padding: 40px 20px 20px 20px;
-      position: relative;
-      z-index: 1;
-    }
+header h1 {
+    font-size: 6rem;
+    margin: 0 0 10px 0;
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff;
+    font-weight: 700;
+}
 
-    header h1 {
-      font-size: 6.5rem;
-      margin: 0 0 10px 0;
-      text-shadow: 0 0 10px #fff, 0 0 20px #fff;
-      font-weight: 700;
-    }
+header p {
+    font-size: 1.3rem;
+    margin: 0;
+    opacity: 0.8;
+    font-weight: 400;
+    letter-spacing: 1px;
+}
 
-    header p {
-      font-size: 1.3rem;
-      margin: 0;
-      opacity: 0.8;
-      font-weight: 400;
-      letter-spacing: 1px;
-    }
+/* Main container */
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+    height: calc(100% - 200px);
+    padding-top: 0px;
+}
 
-    /* Main container */
-    main {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      position: relative;
-      z-index: 1;
-      height: calc(100% - 200px);
-      padding-top: 0px;
-    }
+/* Search bar */
+.search-container {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 20px;
+}
 
-    /* Search bar */
-    .search-container {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      max-width: 600px;
-    }
+.search-container input {
+    flex: 1;
+    padding: 20px 25px;
+    border-radius: 15px;
+    border: none;
+    font-size: 1.2rem;
+    outline: none;
+    backdrop-filter: blur(5px);
+    background-color: rgba(255,255,255,0.12);
+    color: #fff;
+    transition: all 0.3s ease;
+}
 
-    .search-container input {
-      flex: 1;
-      padding: 20px 25px;
-      border-radius: 15px;
-      border: none;
-      font-size: 1.2rem;
-      outline: none;
-      backdrop-filter: blur(5px);
-      background-color: rgba(255,255,255,0.12);
-      color: #fff;
-      transition: all 0.3s ease;
-    }
+.search-container input::placeholder {
+    color: rgba(255,255,255,0.6);
+}
 
-    .search-container input::placeholder {
-      color: rgba(255,255,255,0.6);
-    }
+.search-container button {
+    padding: 20px 30px;
+    border-radius: 15px;
+    border: none;
+    font-size: 1.2rem;
+    font-weight: 500;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+    background-color: rgba(255,255,255,0.12);
+    color: #fff;
+    transition: all 0.3s ease;
+}
 
-    .search-container button {
-      padding: 20px 30px;
-      border-radius: 15px;
-      border: none;
-      font-size: 1.2rem;
-      font-weight: 500;
-      cursor: pointer;
-      backdrop-filter: blur(5px);
-      background-color: rgba(255,255,255,0.12);
-      color: #fff;
-      transition: all 0.3s ease;
-    }
+.search-container button:hover,
+.search-container input:focus {
+    background-color: rgba(255,255,255,0.2);
+    transform: translateY(-2px) scale(1.01);
+}
 
-    .search-container button:hover,
-    .search-container input:focus {
-      background-color: rgba(255,255,255,0.2);
-      transform: translateY(-2px) scale(1.01);
-    }
+/* Iframe styling */
+iframe#frame {
+    width: 90%;
+    height: 70vh;
+    border: 2px solid rgba(255,255,255,0.7);
+    border-radius: 15px;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    margin-top: 20px;
+    display: none;
+    transition: all 0.3s ease;
+}
 
-    iframe#frame {
-      width: 100%;
-      height: 80vh;
-      border: none;
-      margin-top: 20px;
-      display: none;
-      border-radius: 15px;
-      backdrop-filter: blur(5px);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    }
+iframe#frame.active {
+    width: 90%;
+    height: 70vh;
+}
 
-    @media (max-width: 768px) {
-      header h1 { font-size: 4.5rem; }
-      header p { font-size: 1.1rem; }
-      .search-container input, .search-container button { font-size: 1rem; padding: 15px; }
-      iframe#frame { height: 70vh; }
-    }
+/* Responsive */
+@media (max-width: 768px) {
+    header h1 { font-size: 4.5rem; }
+    header p { font-size: 1.1rem; }
+    .search-container input, .search-container button { font-size: 1rem; padding: 15px; }
+    iframe#frame { height: 65vh; }
+}
 
-    @media (max-width: 480px) {
-      header h1 { font-size: 3.5rem; }
-      header p { font-size: 1rem; }
-      .search-container input, .search-container button { font-size: 0.9rem; padding: 12px; }
-      .top-right-logo { width: 45px; height: 45px; top: 15px; right: 15px; }
-      iframe#frame { height: 60vh; }
-    }
-  </style>
+@media (max-width: 480px) {
+    header h1 { font-size: 3.5rem; }
+    header p { font-size: 1rem; }
+    .search-container input, .search-container button { font-size: 0.9rem; padding: 12px; }
+    iframe#frame { height: 60vh; }
+}
+</style>
 </head>
 
 <body>
-  <!-- Particle background -->
-  <canvas id="particle-canvas"></canvas>
+<canvas id="particle-canvas"></canvas>
 
-  <!-- Top right logo -->
-  <div class="top-right-logo">
-      <img src="assets/icons/epy.png" alt="Epy Logo">
-  </div>
+<a href="../index.html" class="back-button">← Back</a>
 
-  <header>
-      <h1>Mercury Proxy</h1>
-      <p>Browse anything, safely</p>
-  </header>
+<header>
+    <h1>Mercury Proxy</h1>
+    <p>Browse anything, safely</p>
+</header>
 
-  <main>
-      <div class="search-container">
-          <input type="text" id="urlInput" placeholder="Enter URL here">
-          <button id="searchButton">Go</button>
-      </div>
-      <iframe id="frame"></iframe>
-  </main>
+<main>
+    <div class="search-container">
+        <input type="text" id="urlInput" placeholder="Enter URL here">
+        <button id="searchButton">Go</button>
+    </div>
+    <iframe id="frame"></iframe>
+</main>
 
-  <script>
-    // Particles JS
-    const canvas = document.getElementById('particle-canvas');
-    const ctx = canvas.getContext('2d');
-    let particlesArray = [];
-    const maxParticles = 100;
+<script>
+// Particles JS
+const canvas = document.getElementById('particle-canvas');
+const ctx = canvas.getContext('2d');
+let particlesArray = [];
+const maxParticles = 100;
 
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
 
-    class Particle {
-      constructor() {
+class Particle {
+    constructor() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
         this.size = Math.random() * 2 + 1;
         this.speedX = (Math.random() - 0.5) * 1;
         this.speedY = (Math.random() - 0.5) * 1;
-      }
-      update() {
+    }
+    update() {
         this.x += this.speedX;
         this.y += this.speedY;
-        if (this.x < 0) this.x = canvas.width;
-        if (this.x > canvas.width) this.x = 0;
-        if (this.y < 0) this.y = canvas.height;
-        if (this.y > canvas.height) this.y = 0;
-      }
-      draw() {
+        if(this.x < 0) this.x = canvas.width;
+        if(this.x > canvas.width) this.x = 0;
+        if(this.y < 0) this.y = canvas.height;
+        if(this.y > canvas.height) this.y = 0;
+    }
+    draw() {
         ctx.fillStyle = 'white';
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
         ctx.fill();
-      }
     }
+}
 
-    function initParticles() {
-      particlesArray = [];
-      for (let i = 0; i < maxParticles; i++) {
+function initParticles() {
+    particlesArray = [];
+    for(let i=0; i<maxParticles; i++){
         particlesArray.push(new Particle());
-      }
     }
-    initParticles();
+}
+initParticles();
 
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particlesArray.forEach(p => {
+function animate() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particlesArray.forEach(p=>{
         p.update();
         p.draw();
-      });
-      requestAnimationFrame(animate);
-    }
-    animate();
+    });
+    requestAnimationFrame(animate);
+}
+animate();
 
-    // UV proxy logic
-    const connection = new BareMux.BareMuxConnection("/baremux/worker.js");
-    const wispUrl = (location.protocol === "https:" ? "wss" : "ws") + "://" + location.host + "/wisp/";
-    const bareUrl = (location.protocol === "https:" ? "https" : "http") + "://" + location.host + "/bare/";
+// UV proxy logic
+const connection = new BareMux.BareMuxConnection("/baremux/worker.js");
+const wispUrl = (location.protocol === "https:" ? "wss" : "ws") + "://" + location.host + "/wisp/";
+const bareUrl = (location.protocol === "https:" ? "https" : "http") + "://" + location.host + "/bare/";
 
-    const input = document.getElementById("urlInput");
-    const button = document.getElementById("searchButton");
-    const iframe = document.getElementById("frame");
-    const searchContainer = document.querySelector(".search-container");
+const input = document.getElementById("urlInput");
+const button = document.getElementById("searchButton");
+const iframe = document.getElementById("frame");
+const searchContainer = document.querySelector(".search-container");
 
-    async function searchUrl() {
-      let url = input.value.trim();
-      const searchPrefix = "https://www.google.com/search?q=";
+async function searchUrl(){
+    let url = input.value.trim();
+    const searchPrefix = "https://www.google.com/search?q=";
 
-      if (!url.includes(".")) url = searchPrefix + encodeURIComponent(url);
-      else if (!url.startsWith("http://") && !url.startsWith("https://")) url = "https://" + url;
+    if(!url.includes(".")) url = searchPrefix + encodeURIComponent(url);
+    else if(!url.startsWith("http://") && !url.startsWith("https://")) url = "https://" + url;
 
-      if (!await connection.getTransport()) {
-        await connection.setTransport("/epoxy/index.mjs", [{ wisp: wispUrl }]);
-      }
-
-      // Hide search bar and show iframe
-      searchContainer.style.display = "none";
-      iframe.style.display = "block";
-      iframe.src = __uv$config.prefix + __uv$config.encodeUrl(url);
+    if(!await connection.getTransport()){
+        await connection.setTransport("/epoxy/index.mjs", [{wisp: wispUrl}]);
     }
 
-    // Button click
-    button.addEventListener("click", searchUrl);
+    // Hide search bar and show iframe with smaller size + outline
+    searchContainer.style.display = "none";
+    iframe.style.display = "block";
+    iframe.classList.add("active");
+    iframe.src = __uv$config.prefix + __uv$config.encodeUrl(url);
+}
 
-    // Enter key
-    input.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
+// Button click
+button.addEventListener("click", searchUrl);
+
+// Enter key
+input.addEventListener("keydown",(e)=>{
+    if(e.key === "Enter"){
         e.preventDefault();
         searchUrl();
-      }
-    });
-  </script>
+    }
+});
+</script>
 </body>
 </html>
