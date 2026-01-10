@@ -98,6 +98,14 @@
             justify-content: center;
             align-items: center;
             width: 100%;
+            flex-wrap: wrap;
+        }
+
+        .button-row {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            width: 100%;
         }
 
         /* Buttons */
@@ -136,6 +144,9 @@
                 font-size: 1.1rem;
             }
             .button-grid {
+                flex-direction: column;
+            }
+            .button-row {
                 flex-direction: column;
             }
             .hub-button, .game-button {
@@ -184,8 +195,13 @@
 
     <main>
         <div class="button-grid">
-            <a href="pages/youtube.html" class="hub-button">Mercury YouTube Matcher</a>
-            <a href="games/games.html" class="hub-button">Games</a>
+            <div class="button-row">
+                <a href="pages/youtube.html" class="hub-button">Mercury YouTube Matcher</a>
+                <a href="games/games.html" class="hub-button">Games</a>
+            </div>
+            <div class="button-row">
+                <a href="pages/ai-chat.html" class="hub-button">Mercury AI</a>
+            </div>
         </div>
     </main>
 
