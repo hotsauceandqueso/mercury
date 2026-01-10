@@ -201,7 +201,7 @@ iframe#frame.active {
 
 <main>
     <div class="search-container">
-        <input type="text" id="urlInput" placeholder="Enter URL here">
+        <input type="text" id="urlInput" placeholder="Search duckduckgo">
         <button id="searchButton">Go</button>
     </div>
     <iframe id="frame"></iframe>
@@ -275,7 +275,7 @@ const searchContainer = document.querySelector(".search-container");
 
 async function searchUrl(){
     let url = input.value.trim();
-    const searchPrefix = "https://www.google.com/search?q=";
+    const searchPrefix = "https://www.duckduckgo.com/search?q=";
 
     if(!url.includes(".")) url = searchPrefix + encodeURIComponent(url);
     else if(!url.startsWith("http://") && !url.startsWith("https://")) url = "https://" + url;
