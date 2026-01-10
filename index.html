@@ -83,12 +83,12 @@
         main {
             display: flex;
             justify-content: center;
-            align-items: flex-start;
+            align-items: center;
             flex-direction: column;
             position: relative;
             z-index: 1;
             height: calc(100% - 200px);
-            padding-top: 60px;
+            padding-top: 0px;
         }
 
         /* Homepage button grid */
@@ -98,7 +98,6 @@
             justify-content: center;
             align-items: center;
             width: 100%;
-            flex-wrap: wrap;
         }
 
         .button-row {
@@ -113,10 +112,10 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 25px 35px;
+            padding: 30px 40px;
             background-color: rgba(255,255,255,0.12);
             color: #fff;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             text-decoration: none;
             border-radius: 20px;
             font-weight: 500;
@@ -125,8 +124,8 @@
             backdrop-filter: blur(5px);
             text-align: center;
             width: 100%;
-            max-width: 280px;
-            height: 160px;
+            max-width: 300px;
+            height: 180px;
         }
 
         .hub-button:hover, .game-button:hover {
@@ -144,9 +143,6 @@
                 font-size: 1.1rem;
             }
             .button-grid {
-                flex-direction: column;
-            }
-            .button-row {
                 flex-direction: column;
             }
             .hub-button, .game-button {
@@ -195,13 +191,9 @@
 
     <main>
         <div class="button-grid">
-            <div class="button-row">
-                <a href="pages/youtube.html" class="hub-button">Mercury YouTube Matcher</a>
-                <a href="games/games.html" class="hub-button">Games</a>
-            </div>
-            <div class="button-row">
-                <a href="pages/ai.html" class="hub-button">Mercury AI</a>
-            </div>
+            <a href="pages/youtube.html" class="hub-button">Mercury YouTube Matcher</a>
+            <a href="games/games.html" class="hub-button">Games</a>
+            <a href="pages/ai.html" class="hub-button">Mercury AI</a>
         </div>
     </main>
 
