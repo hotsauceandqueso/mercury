@@ -18,6 +18,7 @@
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
+        /* Reset & fonts */
         body, html {
             margin: 0;
             padding: 0;
@@ -29,6 +30,7 @@
             position: relative;
         }
 
+        /* Particle canvas */
         canvas#particle-canvas {
             position: fixed;
             top: 0;
@@ -38,6 +40,7 @@
             z-index: 0;
         }
 
+        /* Top right logo */
         .top-right-logo {
             position: fixed;
             top: 20px;
@@ -53,6 +56,7 @@
             object-fit: contain;
         }
 
+        /* Header */
         header {
             text-align: center;
             padding: 40px 20px 20px 20px;
@@ -75,6 +79,7 @@
             letter-spacing: 1px;
         }
 
+        /* Main container */
         main {
             display: flex;
             justify-content: center;
@@ -86,19 +91,23 @@
             padding-top: 0px;
         }
 
+        /* Button grid */
         .button-grid {
             display: flex;
             gap: 20px;
             justify-content: center;
             align-items: center;
+            flex-wrap: wrap;
             width: 100%;
+            max-width: 900px;
         }
 
+        /* Buttons */
         .hub-button, .game-button {
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 25px 35px;
+            padding: 25px 30px;
             background-color: rgba(255,255,255,0.12);
             color: #fff;
             font-size: 1.15rem;
@@ -110,8 +119,8 @@
             backdrop-filter: blur(5px);
             text-align: center;
             width: 100%;
-            max-width: 270px;
-            height: 160px;
+            max-width: 250px; /* slightly narrower */
+            height: 170px;    /* slightly taller */
         }
 
         .hub-button:hover, .game-button:hover {
@@ -120,13 +129,14 @@
             box-shadow: 0 8px 18px rgba(0,0,0,0.5);
         }
 
+        /* Responsive adjustments */
         @media (max-width: 768px) {
             header h1 { font-size: 4.5rem; }
             header p { font-size: 1.1rem; }
             .button-grid { flex-direction: column; }
             .hub-button, .game-button {
                 max-width: 200px;
-                height: 150px;
+                height: 160px;
                 padding: 20px;
                 font-size: 1rem;
             }
@@ -151,6 +161,7 @@
     </style>
 </head>
 <body>
+    <!-- Particle background -->
     <canvas id="particle-canvas"></canvas>
 
     <!-- Updated logo path -->
@@ -172,6 +183,7 @@
     </main>
 
     <script>
+        // Particle system
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let particlesArray = [];
