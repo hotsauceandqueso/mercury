@@ -33,6 +33,31 @@
             z-index: 0;
         }
 
+        /* Back button in top left */
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 12px 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            border: 1px solid rgba(255,255,255,0.25);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.22);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+
         .chat-container {
             width: 100%;
             max-width: 800px;
@@ -214,6 +239,8 @@
 <body>
     <!-- Particle background -->
     <canvas id="particle-canvas"></canvas>
+
+    <a href="../index.html" class="back-button">← Back</a>
 
     <div class="chat-container">
         <div class="chat-header">
