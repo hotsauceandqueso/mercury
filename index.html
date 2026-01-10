@@ -27,15 +27,16 @@ canvas#particle-canvas {
     z-index: 0;
 }
 
-.top-right-logo {
+/* Top-right small image */
+.top-right-image {
     position: fixed;
-    top: 20px;
-    right: 20px;
+    top: 15px;
+    right: 15px;
+    width: 50px;
+    height: 50px;
     z-index: 2;
-    width: 60px;
-    height: 60px;
 }
-.top-right-logo img {
+.top-right-image img {
     width: 100%;
     height: 100%;
     object-fit: contain;
@@ -127,11 +128,11 @@ main {
         padding: 15px;
         font-size: 0.95rem;
     }
-    .top-right-logo {
-        width: 45px;
-        height: 45px;
-        top: 15px;
-        right: 15px;
+    .top-right-image {
+        width: 40px;
+        height: 40px;
+        top: 10px;
+        right: 10px;
     }
 }
 </style>
@@ -140,9 +141,9 @@ main {
 
 <canvas id="particle-canvas"></canvas>
 
-<!-- Top-right logo -->
-<div class="top-right-logo">
-    <img src="mercury/assets/icons/epy.png" alt="Epy Logo">
+<!-- Top-right small image -->
+<div class="top-right-image">
+    <img src="mercury/assets/icons/epy.png" alt="Epy">
 </div>
 
 <header>
@@ -155,7 +156,6 @@ main {
         <a href="pages/youtube.html" class="hub-button">Mercury YouTube Matcher</a>
         <a href="games/games.html" class="hub-button">Games</a>
         <a href="pages/ai.html" class="hub-button">Mercury AI</a>
-        <!-- FIXED: Proxy button added back -->
         <a href="proxy" class="hub-button">Mercury Proxy</a>
     </div>
 </main>
