@@ -36,10 +36,22 @@ canvas#particle-canvas {
     height: 50px;
     z-index: 2;
 }
+
 .top-right-image img {
     width: 100%;
     height: 100%;
     object-fit: contain;
+    animation: spin 3s linear infinite;
+}
+
+/* Spin animation */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 header {
@@ -48,12 +60,14 @@ header {
     position: relative;
     z-index: 1;
 }
+
 header h1 {
     font-size: 6.5rem;
     margin: 0 0 10px 0;
     text-shadow: 0 0 10px #fff, 0 0 20px #fff;
     font-weight: 700;
 }
+
 header p {
     font-size: 1.3rem;
     margin: 0;
@@ -70,7 +84,6 @@ main {
     position: relative;
     z-index: 1;
     height: calc(100% - 200px);
-    padding-top: 0px;
 }
 
 .button-grid {
@@ -82,7 +95,7 @@ main {
 }
 
 /* Buttons */
-.hub-button, .game-button {
+.hub-button {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -98,36 +111,26 @@ main {
     backdrop-filter: blur(5px);
     text-align: center;
     width: 100%;
-    max-width: 230px; /* Reduced from 270px */
+    max-width: 230px;
     height: 160px;
 }
-.hub-button:hover, .game-button:hover {
+
+.hub-button:hover {
     background-color: rgba(255,255,255,0.2);
     transform: translateY(-4px) scale(1.02);
     box-shadow: 0 8px 18px rgba(0,0,0,0.5);
 }
 
-/* Responsive adjustments */
+/* Responsive */
 @media (max-width: 768px) {
     header h1 { font-size: 4.5rem; }
-    header p { font-size: 1.1rem; }
     .button-grid { flex-direction: column; }
-    .hub-button, .game-button {
-        max-width: 180px; /* Reduced from 200px */
-        height: 150px;
-        padding: 20px;
-        font-size: 1rem;
-    }
+    .hub-button { max-width: 180px; }
 }
+
 @media (max-width: 480px) {
     header h1 { font-size: 3.5rem; }
-    header p { font-size: 1rem; }
-    .hub-button, .game-button {
-        max-width: 140px; /* Reduced from 160px */
-        height: 140px;
-        padding: 15px;
-        font-size: 0.95rem;
-    }
+    .hub-button { max-width: 140px; }
     .top-right-image {
         width: 40px;
         height: 40px;
@@ -141,7 +144,7 @@ main {
 
 <canvas id="particle-canvas"></canvas>
 
-<!-- Top-right small image -->
+<!-- Top-right spinning image -->
 <div class="top-right-image">
     <img src="assets/icons/epy.png" alt="Epy">
 </div>
@@ -161,7 +164,6 @@ main {
 </main>
 
 <script>
-// Particles
 const canvas = document.getElementById('particle-canvas');
 const ctx = canvas.getContext('2d');
 let particlesArray = [];
@@ -179,8 +181,8 @@ class Particle {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
         this.size = Math.random() * 2 + 1;
-        this.speedX = (Math.random() - 0.5) * 1;
-        this.speedY = (Math.random() - 0.5) * 1;
+        this.speedX = (Math.random() - 0.5);
+        this.speedY = (Math.random() - 0.5);
     }
     update() {
         this.x += this.speedX;
@@ -193,20 +195,23 @@ class Particle {
     draw() {
         ctx.fillStyle = 'white';
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
     }
 }
+
 function initParticles() {
     particlesArray = [];
-    for(let i=0;i<maxParticles;i++){
+    for (let i = 0; i < maxParticles; i++) {
         particlesArray.push(new Particle());
     }
 }
+
 initParticles();
+
 function animate() {
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    particlesArray.forEach(p=>{
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particlesArray.forEach(p => {
         p.update();
         p.draw();
     });
@@ -214,5 +219,6 @@ function animate() {
 }
 animate();
 </script>
+
 </body>
 </html>
