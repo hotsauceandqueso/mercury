@@ -65,8 +65,35 @@ canvas#particle-canvas {
     border: 1px solid rgba(255,255,255,0.25);
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
 }
 .back-button:hover {
+    background: rgba(255,255,255,0.22);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+}
+
+/* Return to search button (initially hidden) */
+.return-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 12px 20px;
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    border: 1px solid rgba(255,255,255,0.25);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    display: none;
+}
+.return-button:hover {
     background: rgba(255,255,255,0.22);
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(0,0,0,0.4);
@@ -78,6 +105,7 @@ header {
     padding: 40px 20px 20px 20px;
     position: relative;
     z-index: 1;
+    transition: opacity 0.3s ease;
 }
 
 header h1 {
@@ -105,6 +133,7 @@ main {
     z-index: 1;
     height: calc(100% - 200px);
     padding-top: 0px;
+    transition: opacity 0.3s ease;
 }
 
 /* Search bar */
@@ -154,22 +183,21 @@ main {
     transform: translateY(-2px) scale(1.01);
 }
 
-/* Iframe styling */
+/* Iframe styling - fullscreen when active */
 iframe#frame {
-    width: 90%;
-    height: 70vh;
-    border: 2px solid rgba(255,255,255,0.7);
-    border-radius: 15px;
-    backdrop-filter: blur(5px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    margin-top: 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    z-index: 999;
     display: none;
-    transition: all 0.3s ease;
 }
 
-iframe#frame.active {
-    width: 90%;
-    height: 70vh;
+/* Hidden state */
+.hidden {
+    display: none !important;
 }
 
 /* Responsive */
@@ -177,14 +205,12 @@ iframe#frame.active {
     header h1 { font-size: 4.5rem; }
     header p { font-size: 1.1rem; }
     .search-container input, .search-container button { font-size: 1rem; padding: 15px; }
-    iframe#frame { height: 65vh; }
 }
 
 @media (max-width: 480px) {
     header h1 { font-size: 3.5rem; }
     header p { font-size: 1rem; }
     .search-container input, .search-container button { font-size: 0.9rem; padding: 12px; }
-    iframe#frame { height: 60vh; }
 }
 </style>
 </head>
@@ -194,18 +220,21 @@ iframe#frame.active {
 
 <a href="../index.html" class="back-button">← Back</a>
 
-<header>
+<button class="return-button" id="returnButton">← Back to Search</button>
+
+<header id="header">
     <h1>Mercury Proxy</h1>
     <p>Browse anything, safely</p>
 </header>
 
-<main>
+<main id="main">
     <div class="search-container">
         <input type="text" id="urlInput" placeholder="Search duckduckgo">
         <button id="searchButton">Go</button>
     </div>
-    <iframe id="frame"></iframe>
 </main>
+
+<iframe id="frame"></iframe>
 
 <script>
 // Particles JS
@@ -271,7 +300,10 @@ const bareUrl = (location.protocol === "https:" ? "https" : "http") + "://" + lo
 const input = document.getElementById("urlInput");
 const button = document.getElementById("searchButton");
 const iframe = document.getElementById("frame");
-const searchContainer = document.querySelector(".search-container");
+const header = document.getElementById("header");
+const main = document.getElementById("main");
+const backButton = document.querySelector(".back-button");
+const returnButton = document.getElementById("returnButton");
 
 async function searchUrl(){
     let url = input.value.trim();
@@ -284,15 +316,38 @@ async function searchUrl(){
         await connection.setTransport("/epoxy/index.mjs", [{wisp: wispUrl}]);
     }
 
-    // Hide search bar and show iframe with smaller size + outline
-    searchContainer.style.display = "none";
+    // Hide all search page elements
+    header.classList.add("hidden");
+    main.classList.add("hidden");
+    backButton.classList.add("hidden");
+    canvas.classList.add("hidden");
+    
+    // Show fullscreen iframe and return button
     iframe.style.display = "block";
-    iframe.classList.add("active");
+    returnButton.style.display = "block";
+    
     iframe.src = __uv$config.prefix + __uv$config.encodeUrl(url);
+}
+
+// Return to search page
+function returnToSearch() {
+    // Hide iframe and return button
+    iframe.style.display = "none";
+    returnButton.style.display = "none";
+    
+    // Show search page elements
+    header.classList.remove("hidden");
+    main.classList.remove("hidden");
+    backButton.classList.remove("hidden");
+    canvas.classList.remove("hidden");
+    
+    // Clear iframe src to stop loading
+    iframe.src = "";
 }
 
 // Button click
 button.addEventListener("click", searchUrl);
+returnButton.addEventListener("click", returnToSearch);
 
 // Enter key
 input.addEventListener("keydown",(e)=>{
