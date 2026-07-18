@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Mercury Music</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            height: 100%;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+            color: #fff;
+            position: relative;
+        }
+
+        canvas#particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        /* Back button in top left */
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 12px 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            border: 1.5px solid rgba(255,255,255,0.3);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255,255,255,0.2);
+            cursor: pointer;
+        }
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.18);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255,255,255,0.3), 0 0 20px rgba(255, 255, 255, 0.1);
+            border-color: rgba(255,255,255,0.5);
+        }
+        .back-button:active {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        /* Header */
+        header {
+            position: relative;
+            z-index: 10;
+        }
+
+        header h1 {
+            font-size: 5rem;
+            text-align: center;
+            color: white;
+            text-shadow: 0 0 10px #fff, 0 0 20px #fff;
+            margin: 40px 0 20px 0;
+        }
+
+        /* Music container */
+        .music-container {
+            margin-top: 40px;
+            padding: 20px 20px 60px 20px;
+            width: 100%;
+            position: relative;
+            z-index: 5;
+            display: flex;
+            justify-content: center;
+            overflow-y: auto;
+            height: calc(100% - 200px);
+        }
+
+        /* Responsive grid with centered items */
+        .music-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 240px);
+            gap: 50px;
+            row-gap: 50px;
+            width: 100%;
+            max-width: 1200px;
+            justify-content: center;
+            justify-items: center;
+        }
+
+        /* Music buttons */
+        .music-button {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            text-decoration: none;
+            border: 1.5px solid rgba(255,255,255,0.3);
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 240px;
+            height: 200px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255,255,255,0.2);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .music-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.35s ease;
+            pointer-events: none;
+        }
+
+        .music-button img {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 15px;
+            object-fit: cover;
+            border-radius: 12px;
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.35s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .music-button span {
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.35s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .music-button:hover {
+            transform: translateY(-10px) scale(1.02);
+            background: rgba(255, 255, 255, 0.18);
+            border-color: rgba(255,255,255,0.5);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255,255,255,0.3), 0 0 25px rgba(255, 255, 255, 0.15);
+        }
+
+        .music-button:hover::before {
+            opacity: 1;
+        }
+
+        .music-button:hover img {
+            transform: scale(1.08);
+            filter: brightness(1.1);
+        }
+
+        .music-button:hover span {
+            color: #ffffff;
+            text-shadow: 0 0 8px rgba(255,255,255,0.3);
+        }
+
+        .music-button:active {
+            transform: translateY(-4px) scale(0.98);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            color: white;
+            padding: 40px 20px 60px 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1100px) {
+            .music-grid {
+                grid-template-columns: repeat(3, 240px);
+            }
+        }
+
+        @media (max-width: 850px) {
+            .music-grid {
+                grid-template-columns: repeat(2, 240px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 4rem; }
+            .music-grid {
+                grid-template-columns: repeat(2, 200px);
+                gap: 30px;
+                row-gap: 30px;
+            }
+            .music-button {
+                height: 180px;
+                width: 200px;
+            }
+            .back-button { padding: 10px 16px; font-size: 0.9rem; }
+        }
+
+        @media (max-width: 550px) {
+            .music-grid {
+                grid-template-columns: repeat(1, 200px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 { font-size: 3rem; }
+            .music-grid {
+                grid-template-columns: repeat(1, 180px);
+                gap: 25px;
+                row-gap: 25px;
+            }
+            .music-button {
+                height: 160px;
+                width: 180px;
+                padding: 15px;
+            }
+            .music-button img { width: 80px; height: 80px; }
+            .back-button { top: 15px; left: 15px; padding: 8px 14px; font-size: 0.85rem; }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="particle-canvas"></canvas>
+
+    <a href="../index.html" class="back-button">← Back</a>
+
+    <header>
+        <h1>Mercury Music</h1>
+    </header>
+
+    <div class="music-container">
+        <div class="music-grid">
+            <!-- Music items will go here -->
+        </div>
+    </div>
+
+    <footer>
+    </footer>
+
+    <script>
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particlesArray = [];
+        const maxParticles = 100;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = (Math.random() - 0.5);
+                this.speedY = (Math.random() - 0.5);
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.y < 0) this.y = canvas.height;
+                if (this.y > canvas.height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = 'white';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particlesArray = [];
+            for (let i = 0; i < maxParticles; i++) {
+                particlesArray.push(new Particle());
+            }
+        }
+
+        initParticles();
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particlesArray.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
