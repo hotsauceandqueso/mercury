@@ -27,6 +27,7 @@
             width: 100%;
             height: 100%;
             z-index: 0;
+            pointer-events: none;
         }
 
         /* Back button in top left */
@@ -63,39 +64,99 @@
         header {
             position: relative;
             z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         header h1 {
-            font-size: 5rem;
+            font-size: 4rem;
             text-align: center;
             color: white;
-            text-shadow: 0 0 10px #fff, 0 0 20px #fff;
-            margin: 40px 0 20px 0;
+            text-shadow: 0 0 10px #fff, 0 0 20px rgba(255,255,255,0.5);
+            margin: 30px 0 10px 0;
+        }
+
+        /* Controls / Search Bar */
+        .controls-bar {
+            display: flex;
+            gap: 15px;
+            width: 90%;
+            max-width: 800px;
+            margin: 10px auto 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        .search-input, .filter-select {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
+            border: 1.5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            padding: 12px 18px;
+            color: #fff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.25s ease;
+        }
+
+        .search-input {
+            flex: 1;
+        }
+
+        .filter-select {
+            width: 220px;
+            cursor: pointer;
+        }
+
+        .filter-select option {
+            background: #1a2a36;
+            color: #fff;
+        }
+
+        .search-input:focus, .filter-select:focus {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.7);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
         }
 
         /* Music container */
         .music-container {
-            margin-top: 40px;
-            padding: 20px 20px 60px 20px;
+            margin-top: 25px;
+            padding: 10px 20px 80px 20px;
             width: 100%;
             position: relative;
             z-index: 5;
             display: flex;
             justify-content: center;
             overflow-y: auto;
-            height: calc(100% - 200px);
+            height: calc(100% - 220px);
+            box-sizing: border-box;
+        }
+
+        /* Scrollbar styling */
+        .music-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        .music-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+        .music-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4);
         }
 
         /* Responsive grid with centered items */
         .music-grid {
             display: grid;
-            grid-template-columns: repeat(4, 240px);
-            gap: 50px;
-            row-gap: 50px;
+            grid-template-columns: repeat(4, 250px);
+            gap: 30px;
+            row-gap: 30px;
             width: 100%;
             max-width: 1200px;
             justify-content: center;
             justify-items: center;
+            padding-bottom: 40px;
         }
 
         /* Music buttons */
@@ -103,136 +164,195 @@
             background: rgba(255, 255, 255, 0.12);
             backdrop-filter: blur(10px);
             border-radius: 20px;
-            padding: 20px;
+            padding: 18px;
             text-align: center;
             color: white;
-            text-decoration: none;
             border: 1.5px solid rgba(255,255,255,0.3);
             transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            width: 240px;
-            height: 200px;
+            width: 250px;
+            height: 220px;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255,255,255,0.2);
             cursor: pointer;
             position: relative;
             overflow: hidden;
+            box-sizing: border-box;
         }
 
         .music-button::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.1) 0%, transparent 70%);
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.15) 0%, transparent 70%);
             opacity: 0;
             transition: opacity 0.35s ease;
             pointer-events: none;
         }
 
-        .music-button img {
-            width: 100px;
-            height: 100px;
-            margin-bottom: 15px;
+        .music-button .album-art {
+            width: 90px;
+            height: 90px;
+            margin-bottom: 12px;
             object-fit: cover;
             border-radius: 12px;
             transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.35s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            background: #1c2b36;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
         }
 
-        .music-button span {
-            font-size: 1.1rem;
-            font-weight: 500;
-            transition: all 0.35s ease;
+        .music-button .song-name {
+            font-size: 1.05rem;
+            font-weight: 700;
             letter-spacing: 0.3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 90%;
+            margin-bottom: 4px;
+        }
+
+        .music-button .artist-name {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.75);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 90%;
         }
 
         .music-button:hover {
-            transform: translateY(-10px) scale(1.02);
+            transform: translateY(-8px) scale(1.02);
             background: rgba(255, 255, 255, 0.18);
             border-color: rgba(255,255,255,0.5);
             box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255,255,255,0.3), 0 0 25px rgba(255, 255, 255, 0.15);
         }
 
-        .music-button:hover::before {
+        .music-button:hover::before { opacity: 1; }
+        .music-button:hover .album-art { transform: scale(1.08); filter: brightness(1.1); }
+        .music-button:hover .song-name { text-shadow: 0 0 8px rgba(255,255,255,0.5); }
+
+        /* Floating Modal Player */
+        .player-modal {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(5, 12, 16, 0.82);
+            backdrop-filter: blur(12px);
+            z-index: 200;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .player-modal.open {
+            display: flex;
             opacity: 1;
         }
 
-        .music-button:hover img {
-            transform: scale(1.08);
-            filter: brightness(1.1);
-        }
-
-        .music-button:hover span {
-            color: #ffffff;
-            text-shadow: 0 0 8px rgba(255,255,255,0.3);
-        }
-
-        .music-button:active {
-            transform: translateY(-4px) scale(0.98);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            color: white;
-            padding: 40px 20px 60px 20px;
+        .player-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(18px);
+            border: 1.5px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            border-radius: 24px;
+            width: 92%;
+            max-width: 780px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
             position: relative;
-            z-index: 10;
+            animation: popIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        /* Responsive adjustments */
+        @keyframes popIn {
+            from { transform: scale(0.92); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 16px; right: 18px;
+            background: none; border: none;
+            color: #fff; font-size: 1.6rem;
+            cursor: pointer; opacity: 0.8;
+            transition: opacity 0.2s, transform 0.2s;
+        }
+        .close-btn:hover { opacity: 1; transform: scale(1.1); }
+
+        .video-container {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border-radius: 14px;
+            overflow: hidden;
+            background: #000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .video-container iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .modal-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .modal-track-details h3 {
+            font-size: 1.3rem; margin: 0 0 4px 0;
+        }
+        .modal-track-details p {
+            margin: 0; font-size: 0.95rem; color: rgba(255, 255, 255, 0.7);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .modal-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .modal-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: #fff;
+        }
+
+        /* Responsive Breakpoints */
         @media (max-width: 1100px) {
-            .music-grid {
-                grid-template-columns: repeat(3, 240px);
-            }
+            .music-grid { grid-template-columns: repeat(3, 240px); }
         }
-
         @media (max-width: 850px) {
-            .music-grid {
-                grid-template-columns: repeat(2, 240px);
-            }
+            .music-grid { grid-template-columns: repeat(2, 230px); }
+            header h1 { font-size: 3.2rem; }
         }
-
-        @media (max-width: 768px) {
-            header h1 { font-size: 4rem; }
-            .music-grid {
-                grid-template-columns: repeat(2, 200px);
-                gap: 30px;
-                row-gap: 30px;
-            }
-            .music-button {
-                height: 180px;
-                width: 200px;
-            }
-            .back-button { padding: 10px 16px; font-size: 0.9rem; }
-        }
-
         @media (max-width: 550px) {
-            .music-grid {
-                grid-template-columns: repeat(1, 200px);
-            }
-        }
-
-        @media (max-width: 480px) {
-            header h1 { font-size: 3rem; }
-            .music-grid {
-                grid-template-columns: repeat(1, 180px);
-                gap: 25px;
-                row-gap: 25px;
-            }
-            .music-button {
-                height: 160px;
-                width: 180px;
-                padding: 15px;
-            }
-            .music-button img { width: 80px; height: 80px; }
-            .back-button { top: 15px; left: 15px; padding: 8px 14px; font-size: 0.85rem; }
+            .music-grid { grid-template-columns: repeat(1, 220px); }
+            .controls-bar { flex-direction: column; }
+            .filter-select { width: 100%; }
+            header h1 { font-size: 2.5rem; margin-top: 50px; }
         }
     </style>
 </head>
@@ -243,22 +363,348 @@
 
     <header>
         <h1>Mercury Music</h1>
+        <div class="controls-bar">
+            <input type="text" id="search-bar" class="search-input" placeholder="Search song, artist, or album..." oninput="handleSearch()">
+            <select id="artist-filter" class="filter-select" onchange="handleFilter()">
+                <option value="ALL">All Artists</option>
+            </select>
+        </div>
     </header>
 
     <div class="music-container">
-        <div class="music-grid">
-            <!-- Music items will go here -->
+        <div class="music-grid" id="music-grid">
+            <!-- Dynamically populated from playlist array -->
         </div>
     </div>
 
-    <footer>
-    </footer>
+    <!-- YouTube Modal Player -->
+    <div class="player-modal" id="player-modal" onclick="onModalBgClick(event)">
+        <div class="player-card">
+            <button class="close-btn" onclick="closePlayer()">✕</button>
+            <div class="video-container">
+                <iframe id="video-frame" 
+                        src="about:blank" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                </iframe>
+            </div>
+            <div class="modal-info">
+                <div class="modal-track-details">
+                    <h3 id="modal-song">Song Title</h3>
+                    <p id="modal-meta">Artist - Album</p>
+                </div>
+                <div class="modal-actions">
+                    <button class="modal-btn" onclick="prevSong()">⏮ Prev</button>
+                    <button class="modal-btn" onclick="nextSong()">Next ⏭</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
+        // Track collection parsed from your Spotify tracklist
+        const playlist = [
+            { id: "M4_v5hG0k3I", title: "NOKIA", artist: "Drake", album: "$ome $exy $ongs 4 U", emoji: "📱" },
+            { id: "civuoU_NE38", title: "The Pot", artist: "TOOL", album: "10,000 Days", emoji: "🌀" },
+            { id: "JgLzBvGgY_Y", title: "FANTASY", artist: "Meiko Nakahara", album: "２時までのシンデレラ", emoji: "🌆" },
+            { id: "j0q4P5c8z6Q", title: "FRIDAY MAGIC", artist: "Meiko Nakahara", album: "２時までのシンデレラ", emoji: "✨" },
+            { id: "XEEasR7hVhA", title: "The Devil in I", artist: "Slipknot", album: ".5: The Gray Chapter", emoji: "👺" },
+            { id: "5abamRO41fE", title: "Custer", artist: "Slipknot", album: ".5: The Gray Chapter", emoji: "⚡" },
+            { id: "V9U3vA2z2gM", title: "Nimble Bastard", artist: "Incubus", album: "8", emoji: "🎸" },
+            { id: "Co0tTeuUVhU", title: "Heartless", artist: "Kanye West", album: "808s & Heartbreak", emoji: "💔" },
+            { id: "ir668d2fX_M", title: "Paranoid", artist: "Kanye West, Mr Hudson", album: "808s & Heartbreak", emoji: "🛸" },
+            { id: "5o3YqN60M8I", title: "RoboCop", artist: "Kanye West", album: "808s & Heartbreak", emoji: "🤖" },
+            { id: "n6j4469wR78", title: "Coldest Winter", artist: "Kanye West", album: "808s & Heartbreak", emoji: "❄️" },
+            { id: "XWkY7n27zls", title: "Killing Spree", artist: "Daron Malakian and Scars On Broadway", album: "Addicted To The Violence", emoji: "🔥" },
+            { id: "5k9yR8z1cLo", title: "Satan Hussein", artist: "Daron Malakian and Scars On Broadway", album: "Addicted To The Violence", emoji: "🔥" },
+            { id: "2h09z5N4z7s", title: "Done Me Wrong", artist: "Daron Malakian and Scars On Broadway", album: "Addicted To The Violence", emoji: "🔥" },
+            { id: "9P1N7jXl_4U", title: "Your Lives Burn", artist: "Daron Malakian and Scars On Broadway", album: "Addicted To The Violence", emoji: "🔥" },
+            { id: "P_z1jN87aM4", title: "Imposter", artist: "Daron Malakian and Scars On Broadway", album: "Addicted To The Violence", emoji: "🔥" },
+            { id: "K3l1w2oQ_1A", title: "Addicted To The Violence", artist: "Daron Malakian and Scars On Broadway", album: "Addicted To The Violence", emoji: "🔥" },
+            { id: "-ww_46A6N4I", title: "Bored", artist: "Deftones", album: "Adrenaline", emoji: "🌑" },
+            { id: "zWJ3H0978Qo", title: "Minus Blindfold", artist: "Deftones", album: "Adrenaline", emoji: "🌑" },
+            { id: "e1K8wN91v7w", title: "One Weak", artist: "Deftones", album: "Adrenaline", emoji: "🌑" },
+            { id: "d5Qz4z7o3w0", title: "7 Words", artist: "Deftones", album: "Adrenaline", emoji: "🌑" },
+            { id: "L28y3M9_1K8", title: "Engine No. 9", artist: "Deftones", album: "Adrenaline", emoji: "🌑" },
+            { id: "07pLGIgykiw", title: "Stinkfist", artist: "TOOL", album: "Ænima", emoji: "👁️" },
+            { id: "EDlC7oG_2Qw", title: "Forty Six & 2", artist: "TOOL", album: "Ænima", emoji: "👁️" },
+            { id: "5abamRO41fE", title: "Psychosocial", artist: "Slipknot", album: "All Hope Is Gone", emoji: "☣️" },
+            { id: "LXEKUT6KQuv", title: "Snuff", artist: "Slipknot", album: "All Hope Is Gone", emoji: "🥀" },
+            { id: "GR8jOJZERhs", title: "The Weekend - Radio Edit", artist: "Michael Gray", album: "Analog Is On", emoji: "🪩" },
+            { id: "W1Z4Yl6Q238", title: "私達を信じていて", artist: "Cindy", album: "Angel Touch", emoji: "🌸" },
+            { id: "q9W5pXz2r9s", title: "Must Be Lucky 〜愛の国へ〜", artist: "Cindy", album: "Angel Touch", emoji: "🌸" },
+            { id: "q3j3r2z4k1w", title: "Lacquer Head", artist: "Primus", album: "Antipop", emoji: "🐟" },
+            { id: "XOzs1FehYOA", title: "My Own Summer (Shove It)", artist: "Deftones", album: "Around the Fur", emoji: "🌊" },
+            { id: "KvknJYP9El8", title: "Be Quiet and Drive (Far Away)", artist: "Deftones", album: "Around the Fur", emoji: "🚗" },
+            { id: "H0kJLW2iWcU", title: "Guerrilla Radio", artist: "Rage Against The Machine", album: "The Battle Of Los Angeles", emoji: "⚡" },
+            { id: "5_APxJ17v2k", title: "Kiss of Life", artist: "Sade", album: "The Best of Sade", emoji: "🎷" },
+            { id: "88M3Lq_w7G4", title: "Good Bye Boogie Dance", artist: "Anri", album: "Bi・Ki・Ni", emoji: "🌴" },
+            { id: "AhcttcXc5-0", title: "About A Girl", artist: "Nirvana", album: "Bleach", emoji: "🎸" },
+            { id: "m6VojYGrnpg", title: "The Power of Equality", artist: "Red Hot Chili Peppers", album: "Blood Sugar Sex Magik", emoji: "🌶️" },
+            { id: "rV2kGk8oY3E", title: "If You Have to Ask", artist: "Red Hot Chili Peppers", album: "Blood Sugar Sex Magik", emoji: "🌶️" },
+            { id: "GLvohMXgcBo", title: "Breaking the Girl", artist: "Red Hot Chili Peppers", album: "Blood Sugar Sex Magik", emoji: "🌶️" },
+            { id: "3Q3x1C5M4nU", title: "Funky Monks", artist: "Red Hot Chili Peppers", album: "Blood Sugar Sex Magik", emoji: "🌶️" },
+            { id: "C6jJgG83tc4", title: "Suck My Kiss", artist: "Red Hot Chili Peppers", album: "Blood Sugar Sex Magik", emoji: "🌶️" },
+            { id: "Mr_uHJPUlO8", title: "Give It Away", artist: "Red Hot Chili Peppers", album: "Blood Sugar Sex Magik", emoji: "🌶️" },
+            { id: "rZ_oT7M24o4", title: "Blood Sugar Sex Magik", artist: "Red Hot Chili Peppers", album: "Blood Sugar Sex Magik", emoji: "🌶️" },
+            { id: "GLvohMXgcBo", title: "Under the Bridge", artist: "Red Hot Chili Peppers", album: "Blood Sugar Sex Magik", emoji: "🌶️" },
+            { id: "1R9w7r3o6fU", title: "Naked in the Rain", artist: "Red Hot Chili Peppers", album: "Blood Sugar Sex Magik", emoji: "🌶️" },
+            { id: "p0vM9iGOH60", title: "Sir Psycho Sexy", artist: "Red Hot Chili Peppers", album: "Blood Sugar Sex Magik", emoji: "🌶️" },
+            { id: "LO2RPDZkY88", title: "Go", artist: "The Chemical Brothers, Q-Tip", album: "Born In The Echoes", emoji: "🔊" },
+            { id: "7r1N9z6y3kM", title: "Rabbit Hole - Cowards, Pt. 1", artist: "Chevelle", album: "Bright as Blasphemy", emoji: "🪐" },
+            { id: "6w3M8y4v9k1", title: "Jim Jones - Cowards, Pt. 2", artist: "Chevelle", album: "Bright as Blasphemy", emoji: "🪐" },
+            { id: "2q0y4M7w5z8", title: "Al Phobias", artist: "Chevelle", album: "Bright as Blasphemy", emoji: "🪐" },
+            { id: "B9M7z6q4y8U", title: "KING", artist: "Kanye West, Ye", album: "BULLY - DELUXE", emoji: "👑" },
+            { id: "5o7z3q8M6y0", title: "THIS A MUST", artist: "Kanye West, Ye", album: "BULLY - DELUXE", emoji: "👑" },
+            { id: "0w4y6M8z1k3", title: "FATHER (feat. Travis Scott)", artist: "Kanye West, Ye, Travis Scott", album: "BULLY - DELUXE", emoji: "👑" },
+            { id: "7q2z5M9w4y0", title: "ALL THE LOVE", artist: "Kanye West, Ye, Andre Troutman", album: "BULLY - DELUXE", emoji: "👑" },
+            { id: "2w0y6M8z4q7", title: "PUNCH DRUNK", artist: "Kanye West, Ye", album: "BULLY - DELUXE", emoji: "👑" },
+            { id: "9q2z4M7w5y0", title: "WHATEVER WORKS", artist: "Kanye West, Ye", album: "BULLY - DELUXE", emoji: "👑" },
+            { id: "5w0y7M9z4q2", title: "BULLY (feat. CeeLo Green)", artist: "Kanye West, Ye, CeeLo Green", album: "BULLY - DELUXE", emoji: "👑" },
+            { id: "3q0y5M8z2w7", title: "HIGHS AND LOWS", artist: "Kanye West, Ye", album: "BULLY - DELUXE", emoji: "👑" },
+            { id: "7w0y4M9z3q5", title: "DAMN", artist: "Kanye West, Ye", album: "BULLY - DELUXE", emoji: "👑" },
+            { id: "JnfyjwChuNU", title: "By the Way", artist: "Red Hot Chili Peppers", album: "By the Way", emoji: "🚕" },
+            { id: "1R9a7yM5s8Q", title: "Universally Speaking", artist: "Red Hot Chili Peppers", album: "By the Way", emoji: "🚕" },
+            { id: "kS6eXWf9OIE", title: "Dosed", artist: "Red Hot Chili Peppers", album: "By the Way", emoji: "🚕" },
+            { id: "qJ_Tw0w3lOA", title: "Don't Forget Me", artist: "Red Hot Chili Peppers", album: "By the Way", emoji: "🚕" },
+            { id: "0fcRa5B079U", title: "The Zephyr Song", artist: "Red Hot Chili Peppers", album: "By the Way", emoji: "🚕" },
+            { id: "BfOdQc3DP4U", title: "Can't Stop", artist: "Red Hot Chili Peppers", album: "By the Way", emoji: "🚕" },
+            { id: "a9eN79MHYno", title: "Around the World", artist: "Red Hot Chili Peppers", album: "Californication", emoji: "☀️" },
+            { id: "7fN0w7r5q8Q", title: "Parallel Universe", artist: "Red Hot Chili Peppers", album: "Californication", emoji: "☀️" },
+            { id: "mzJj5-lubeM", title: "Scar Tissue", artist: "Red Hot Chili Peppers", album: "Californication", emoji: "☀️" },
+            { id: "rn_YodiJO6k", title: "Otherside", artist: "Red Hot Chili Peppers", album: "Californication", emoji: "☀️" },
+            { id: "YlUKcNNmywk", title: "Californication", artist: "Red Hot Chili Peppers", album: "Californication", emoji: "☀️" },
+            { id: "1y8M7q4w3s0", title: "This Velvet Glove", artist: "Red Hot Chili Peppers", album: "Californication", emoji: "☀️" },
+            { id: "hnAg3r3r4vo", title: "Road Trippin'", artist: "Red Hot Chili Peppers", album: "Californication", emoji: "☀️" },
+            { id: "4Weu78xZpP8", title: "We Don't Care", artist: "Kanye West", album: "The College Dropout", emoji: "🧸" },
+            { id: "9P1N7jXl_4U", title: "All Falls Down", artist: "Kanye West, Syleena Johnson", album: "The College Dropout", emoji: "🧸" },
+            { id: "8kyWDhB_QeI", title: "Spaceship", artist: "Kanye West, GLC, Consequence", album: "The College Dropout", emoji: "🧸" },
+            { id: "MYF7H_fpc-g", title: "Jesus Walks", artist: "Kanye West", album: "The College Dropout", emoji: "🧸" },
+            { id: "yWzM5K7w3s9", title: "Get Em High", artist: "Kanye West, Talib Kweli, Common", album: "The College Dropout", emoji: "🧸" },
+            { id: "7r1M8z4w2s9", title: "Two Words", artist: "Kanye West, Mos Def, Freeway", album: "The College Dropout", emoji: "🧸" },
+            { id: "uvb-1wjAtk4", title: "Through The Wire", artist: "Kanye West", album: "The College Dropout", emoji: "🧸" },
+            { id: "1y8M7q4w3s9", title: "Family Business", artist: "Kanye West", album: "The College Dropout", emoji: "🧸" },
+            { id: "hrMrqBcv6Mk", title: "Slow Jamz", artist: "Twista, Kanye West, Jamie Foxx", album: "The College Dropout", emoji: "🧸" },
+            { id: "I7rCNiiNPxA", title: "Monkey Wrench", artist: "Foo Fighters", album: "The Colour And The Shape", emoji: "⚡" },
+            { id: "EqWRaAFb_WY", title: "My Hero", artist: "Foo Fighters", album: "The Colour And The Shape", emoji: "⚡" },
+            { id: "eBG7P-K-r1Y", title: "Everlong", artist: "Foo Fighters", album: "The Colour And The Shape", emoji: "⚡" },
+            { id: "Mu6n5PqFvH0", title: "Megalomaniac", artist: "Incubus", album: "A Crow Left Of The Murder", emoji: "🦅" },
+            { id: "q9W5pXz2r9s", title: "Talk Shows on Mute", artist: "Incubus", album: "A Crow Left Of The Murder", emoji: "🦅" },
+            { id: "NLZRYQMLMS4", title: "DNA.", artist: "Kendrick Lamar", album: "DAMN.", emoji: "🧱" },
+            { id: "y8184-7a0", title: "YAH.", artist: "Kendrick Lamar", album: "DAMN.", emoji: "🧱" },
+            { id: "vjIWhZNAb0", title: "ELEMENT.", artist: "Kendrick Lamar", album: "DAMN.", emoji: "🧱" },
+            { id: "40rE7q2z3w8", title: "FEEL.", artist: "Kendrick Lamar", album: "DAMN.", emoji: "🧱" },
+            { id: "Dlh-dzB2U4Y", title: "LOYALTY.", artist: "Kendrick Lamar, Rihanna", album: "DAMN.", emoji: "🧱" },
+            { id: "INi3qP1z4w7", title: "PRIDE.", artist: "Kendrick Lamar", album: "DAMN.", emoji: "🧱" },
+            { id: "tvTRZJ-4EyI", title: "HUMBLE.", artist: "Kendrick Lamar", album: "DAMN.", emoji: "🧱" },
+            { id: "ox7RsX1VDhk", title: "LOVE.", artist: "Kendrick Lamar, Zacari", album: "DAMN.", emoji: "🧱" },
+            { id: "3Q3x1C5M4nU", title: "FEAR.", artist: "Kendrick Lamar", album: "DAMN.", emoji: "🧱" },
+            { id: "1R9w7r3o6fU", title: "GOD.", artist: "Kendrick Lamar", album: "DAMN.", emoji: "🧱" },
+            { id: "2h09z5N4z7s", title: "DUCKWORTH.", artist: "Kendrick Lamar", album: "DAMN.", emoji: "🧱" },
+            { id: "woAcXSMyCEw", title: "Sextape", artist: "Deftones", album: "Diamond Eyes", emoji: "💎" },
+            { id: "7r1M8z4w2s0", title: "Lives", artist: "Daron Malakian and Scars On Broadway", album: "Dictator", emoji: "🧨" },
+            { id: "5k9yR8z1cLo", title: "Dictator", artist: "Daron Malakian and Scars On Broadway", album: "Dictator", emoji: "🧨" },
+            { id: "XWkY7n27zls", title: "Fuck and Kill", artist: "Daron Malakian and Scars On Broadway", album: "Dictator", emoji: "🧨" },
+            { id: "9P1N7jXl_4U", title: "Guns Are Loaded", artist: "Daron Malakian and Scars On Broadway", album: "Dictator", emoji: "🧨" },
+            { id: "uAE6lucJ15A", title: "Rooster", artist: "Alice In Chains", album: "Dirt", emoji: "⏳" },
+            { id: "Nco_kh8xJRs", title: "Would?", artist: "Alice In Chains", album: "Dirt", emoji: "⏳" },
+            { id: "m6VojYGrnpg", title: "Hurricane", artist: "Kanye West, The Weeknd", album: "Donda", emoji: "⬛" },
+            { id: "rV2kGk8oY3E", title: "Moon", artist: "Kanye West", album: "Donda", emoji: "⬛" },
+            { id: "V9U3vA2z2gM", title: "Off The Grid", artist: "Kanye West", album: "Donda", emoji: "⬛" },
+            { id: "Co0tTeuUVhU", title: "Praise God", artist: "Kanye West", album: "Donda", emoji: "⬛" },
+            { id: "SBjQ9tuTr-8", title: "The Pretender", artist: "Foo Fighters", album: "Echoes, Silence, Patience & Grace", emoji: "🎙️" },
+            { id: "yWzM5K7w3s9", title: "The Dying Song", artist: "Slipknot", album: "The End, So Far", emoji: "🩸" },
+            { id: "5o7z3q8M6y0", title: "The Chapeltown Rag", artist: "Slipknot", album: "The End, So Far", emoji: "🩸" },
+            { id: "B9M7z6q4y8U", title: "Yen", artist: "Slipknot", album: "The End, So Far", emoji: "🩸" },
+            { id: "0w4y6M8z1k3", title: "Make It Wit Chu", artist: "Queens of the Stone Age", album: "Era Vulgaris", emoji: "📻" },
+            { id: "nP_C1a_jM-M", title: "euphoria", artist: "Kendrick Lamar", album: "euphoria", emoji: "🥊" },
+            { id: "3L4YrGaR8E4", title: "Bulls On Parade", artist: "Rage Against The Machine", album: "Evil Empire", emoji: "🔊" },
+            { id: "TAqZb52sgpU", title: "Man in the Box", artist: "Alice In Chains", album: "Facelift", emoji: "📦" },
+            { id: "CdhqVTm_pVo", title: "Going Under", artist: "Evanescence", album: "Fallen", emoji: "🦇" },
+            { id: "3YxaaGgTQYM", title: "Bring Me To Life", artist: "Evanescence", album: "Fallen", emoji: "🦇" },
+            { id: "s8XIgR5OGJ8", title: "Pneuma", artist: "TOOL", album: "Fear Inoculum", emoji: "👁️" },
+            { id: "TGgcC539396k", title: "See You Again", artist: "Tyler, The Creator, Kali Uchis", album: "Flower Boy", emoji: "🐝" },
+            { id: "jRGrNDV2NWo", title: "Freak On a Leash", artist: "Korn", album: "Follow The Leader", emoji: "🌽" },
+            { id: "VAWjsVoDpm0", title: "Got the Life", artist: "Korn", album: "Follow The Leader", emoji: "🌽" },
+            { id: "eDuRoPIOBjE", title: "Forever", artist: "Drake, Kanye West, Lil Wayne, Eminem", album: "Forever", emoji: "🏆" },
+            { id: "r4OhIU-ByB8", title: "Too Many Puppies", artist: "Primus", album: "Frizzle Fry", emoji: "🐶" },
+            { id: "Lk3lKNZp4_U", title: "John the Fisherman", artist: "Primus", album: "Frizzle Fry", emoji: "🎣" },
+            { id: "_-XaaTqOICU", title: "Flying Whales", artist: "Gojira", album: "From Mars to Sirius", emoji: "🐋" },
+            { id: "Q0oIoR9mLwc", title: "Dark Necessities", artist: "Red Hot Chili Peppers", album: "The Getaway", emoji: "🛹" },
+            { id: "sC25q8R1z2w", title: "luther", artist: "Kendrick Lamar, SZA", album: "GNX", emoji: "🏁" },
+            { id: "m4y6M8z1k38", title: "heart pt. 6", artist: "Kendrick Lamar", album: "GNX", emoji: "🏁" },
+            { id: "x2q0y4M7w5z", title: "gloria", artist: "Kendrick Lamar, SZA", album: "GNX", emoji: "🏁" },
+            { id: "mFNaFeIm4wA", title: "She", artist: "Tyler, The Creator, Frank Ocean", album: "Goblin", emoji: "🌲" },
+            { id: "GF8aaTu2kg0", title: "Bitch, Don’t Kill My Vibe", artist: "Kendrick Lamar", album: "good kid, m.A.A.d city", emoji: "🚐" },
+            { id: "EZW7et3tPuQ", title: "Backseat Freestyle", artist: "Kendrick Lamar", album: "good kid, m.A.A.d city", emoji: "🚐" },
+            { id: "smqhSl0u_gI", title: "Money Trees", artist: "Kendrick Lamar, Jay Rock", album: "good kid, m.A.A.d city", emoji: "🚐" },
+            { id: "yyr2gEouGEM", title: "Poetic Justice", artist: "Kendrick Lamar, Drake", album: "good kid, m.A.A.d city", emoji: "🚐" },
+            { id: "10yrPDf92hY", title: "m.A.A.d city", artist: "Kendrick Lamar, MC Eiht", album: "good kid, m.A.A.d city", emoji: "🚐" },
+            { id: "8-ejyHzz3XE", title: "Swimming Pools (Drank)", artist: "Kendrick Lamar", album: "good kid, m.A.A.d city", emoji: "🚐" },
+            { id: "60B-F6e4Ew8", title: "Good Morning", artist: "Kanye West", album: "Graduation", emoji: "🎓" },
+            { id: "PsO6ZnUZI0g", title: "Stronger", artist: "Kanye West", album: "Graduation", emoji: "🎓" },
+            { id: "7r1N9z6y3kM", title: "I Wonder", artist: "Kanye West", album: "Graduation", emoji: "🎓" },
+            { id: "FEKEjpTzB0Q", title: "Good Life", artist: "Kanye West, T-Pain", album: "Graduation", emoji: "🎓" },
+            { id: "E58qLXBfLrs", title: "Can't Tell Me Nothing", artist: "Kanye West", album: "Graduation", emoji: "🎓" },
+            { id: "ila-hAUXR5U", title: "Flashing Lights", artist: "Kanye West, Dwele", album: "Graduation", emoji: "🎓" },
+            { id: "D_g7liFq_3A", title: "Homecoming", artist: "Kanye West, Chris Martin", album: "Graduation", emoji: "🎓" },
+            { id: "dKz_pLqZ5-U", title: "Harakiri", artist: "Serj Tankian", album: "Harakiri", emoji: "🗡️" },
+            { id: "bX-g_H7rF4k", title: "Face to the Floor", artist: "Chevelle", album: "Hats Off to the Bull", emoji: "🐂" },
+            { id: "6w3M8y4v9k1", title: "Stop Crying Your Heart Out", artist: "Oasis", album: "Heathen Chemistry", emoji: "🌧️" },
+            { id: "1g4M6s1o8z9", title: "Last Summer Whisper", artist: "Anri", album: "Heaven Beach", emoji: "🏝️" },
+            { id: "7r1M8z4w2s9", title: "Fly By Day", artist: "Anri", album: "Heaven Beach", emoji: "🏝️" },
+            { id: "il7b3xQy2w8", title: "Rich Flex", artist: "Drake, 21 Savage", album: "Her Loss", emoji: "🗡️" },
+            { id: "4Weu78xZpP8", title: "Sticky", artist: "Drake", album: "Honestly, Nevermind", emoji: "🌊" },
+            { id: "vjVk3UrQvP4", title: "Papercut", artist: "Linkin Park", album: "Hybrid Theory", emoji: "⚡" },
+            { id: "4qlCC1GOwFw", title: "One Step Closer", artist: "Linkin Park", album: "Hybrid Theory", emoji: "⚡" },
+            { id: "kJQP7kiw5Fk", title: "In the End", artist: "Linkin Park", album: "Hybrid Theory", emoji: "⚡" },
+            { id: "1Vej0qeQ3io", title: "Points of Authority", artist: "Linkin Park", album: "Hybrid Theory", emoji: "⚡" },
+            { id: "Gd9OhYroKA0", title: "Crawling", artist: "Linkin Park", album: "Hybrid Theory", emoji: "⚡" },
+            { id: "kXYiU_JCYtU", title: "Numb", artist: "Linkin Park", album: "Meteora", emoji: "⚡" },
+            { id: "LYU-8IFcDPw", title: "Faint", artist: "Linkin Park", album: "Meteora", emoji: "⚡" },
+            { id: "zsCD5XCu6CM", title: "Somewhere I Belong", artist: "Linkin Park", album: "Meteora", emoji: "⚡" },
+            { id: "v2H4W9050wo", title: "Breaking the Habit", artist: "Linkin Park", album: "Meteora", emoji: "⚡" },
+            { id: "zUzd9KyIDr8", title: "B.Y.O.B.", artist: "System Of A Down", album: "Mezmerize", emoji: "💣" },
+            { id: "CSvFpBOe8eY", title: "Chop Suey!", artist: "System Of A Down", album: "Toxicity", emoji: "💣" },
+            { id: "iywaBOMvYLI", title: "Toxicity", artist: "System Of A Down", album: "Toxicity", emoji: "💣" },
+            { id: "L-iepu3EtyE", title: "Aerials", artist: "System Of A Down", album: "Toxicity", emoji: "💣" },
+            { id: "94bm_a1yD-U", title: "Sugar", artist: "System Of A Down", album: "System Of A Down", emoji: "💣" },
+            { id: "SqZNMvIEHhs", title: "Spiders", artist: "System Of A Down", album: "System Of A Down", emoji: "💣" },
+            { id: "nuP_c_o4M7s", title: "Mayonaka no Door ~ stay with me", artist: "Miki Matsubara", album: "Pocket Park", emoji: "🚪" },
+            { id: "9bZkp7q19f0", title: "Gangnam Style", artist: "PSY", album: "Bonus", emoji: "🕶️" }
+        ];
+
+        let currentTrackIndex = 0;
+        let displayedPlaylist = [...playlist];
+
+        // Renders the music cards into the DOM
+        function renderGrid(songs) {
+            const grid = document.getElementById('music-grid');
+            grid.innerHTML = '';
+
+            if (songs.length === 0) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; font-size: 1.2rem; color: rgba(255,255,255,0.7); padding: 40px;">No songs found matching your search.</p>';
+                return;
+            }
+
+            songs.forEach((song) => {
+                const globalIndex = playlist.indexOf(song);
+                const btn = document.createElement('div');
+                btn.className = 'music-button';
+                btn.onclick = () => openPlayer(globalIndex);
+
+                btn.innerHTML = `
+                    <div class="album-art">${song.emoji || '🎵'}</div>
+                    <div class="song-name" title="${song.title}">${song.title}</div>
+                    <div class="artist-name" title="${song.artist}">${song.artist}</div>
+                `;
+                grid.appendChild(btn);
+            });
+        }
+
+        // Populate Artist Dropdown dynamically
+        function populateArtistFilter() {
+            const select = document.getElementById('artist-filter');
+            const artists = new Set();
+            playlist.forEach(s => {
+                s.artist.split(',').forEach(a => artists.add(a.trim()));
+            });
+
+            Array.from(artists).sort().forEach(artist => {
+                const opt = document.createElement('option');
+                opt.value = artist;
+                opt.textContent = artist;
+                select.appendChild(opt);
+            });
+        }
+
+        // Live Search & Filtering
+        function applyFilters() {
+            const query = document.getElementById('search-bar').value.toLowerCase().trim();
+            const artistFilter = document.getElementById('artist-filter').value;
+
+            displayedPlaylist = playlist.filter(song => {
+                const matchesSearch = song.title.toLowerCase().includes(query) || 
+                                      song.artist.toLowerCase().includes(query) || 
+                                      (song.album && song.album.toLowerCase().includes(query));
+                const matchesArtist = artistFilter === 'ALL' || song.artist.includes(artistFilter);
+                return matchesSearch && matchesArtist;
+            });
+
+            renderGrid(displayedPlaylist);
+        }
+
+        function handleSearch() { applyFilters(); }
+        function handleFilter() { applyFilters(); }
+
+        // Modal Video Player Logic (YouTube No-Cookie)
+        function openPlayer(index) {
+            currentTrackIndex = index;
+            const song = playlist[index];
+            const modal = document.getElementById('player-modal');
+            const iframe = document.getElementById('video-frame');
+            
+            // Build the clean privacy-enhanced embed URL
+            // If explicit ID exists, use /embed/ID, otherwise fallback to search embed
+            let embedUrl = "";
+            if (song.id && song.id.length === 11) {
+                embedUrl = `https://www.youtube-nocookie.com/embed/${song.id}?autoplay=1&rel=0&modestbranding=1`;
+            } else {
+                const q = encodeURIComponent(`${song.artist} ${song.title} official audio`);
+                embedUrl = `https://www.youtube-nocookie.com/embed?listType=search&list=${q}&autoplay=1`;
+            }
+
+            iframe.src = embedUrl;
+            document.getElementById('modal-song').textContent = song.title;
+            document.getElementById('modal-meta').textContent = `${song.artist} • ${song.album || 'Mercury Vault'}`;
+            
+            modal.classList.add('open');
+        }
+
+        function closePlayer() {
+            const modal = document.getElementById('player-modal');
+            const iframe = document.getElementById('video-frame');
+            iframe.src = "about:blank"; // stop audio playback
+            modal.classList.remove('open');
+        }
+
+        function nextSong() {
+            if (currentTrackIndex < playlist.length - 1) {
+                openPlayer(currentTrackIndex + 1);
+            } else {
+                openPlayer(0);
+            }
+        }
+
+        function prevSong() {
+            if (currentTrackIndex > 0) {
+                openPlayer(currentTrackIndex - 1);
+            } else {
+                openPlayer(playlist.length - 1);
+            }
+        }
+
+        function onModalBgClick(event) {
+            if (event.target.id === 'player-modal') {
+                closePlayer();
+            }
+        }
+
+        // Keyboard navigation
+        window.addEventListener('keydown', (e) => {
+            const modal = document.getElementById('player-modal');
+            if (modal.classList.contains('open')) {
+                if (e.key === 'Escape') closePlayer();
+                if (e.key === 'ArrowRight') nextSong();
+                if (e.key === 'ArrowLeft') prevSong();
+            }
+        });
+
+        // Background Particles
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let particlesArray = [];
-        const maxParticles = 100;
+        const maxParticles = 90;
 
         function resizeCanvas() {
             canvas.width = window.innerWidth;
@@ -271,9 +717,10 @@
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 1;
-                this.speedX = (Math.random() - 0.5);
-                this.speedY = (Math.random() - 0.5);
+                this.size = Math.random() * 2 + 0.8;
+                this.speedX = (Math.random() - 0.5) * 0.6;
+                this.speedY = (Math.random() - 0.5) * 0.6;
+                this.alpha = Math.random() * 0.7 + 0.3;
             }
             update() {
                 this.x += this.speedX;
@@ -284,7 +731,7 @@
                 if (this.y > canvas.height) this.y = 0;
             }
             draw() {
-                ctx.fillStyle = 'white';
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
@@ -298,8 +745,6 @@
             }
         }
 
-        initParticles();
-
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             particlesArray.forEach(p => {
@@ -308,7 +753,12 @@
             });
             requestAnimationFrame(animate);
         }
+
+        // Initialize page
+        initParticles();
         animate();
+        populateArtistFilter();
+        renderGrid(playlist);
     </script>
 </body>
 </html>
